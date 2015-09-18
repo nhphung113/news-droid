@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">NewsDroid</string>
+    <string name="app_version">v.1.0.6</string>
+
+    <string name="action_settings">Cài đặt</string>
+    <string name="action_add_papers">Nguồn báo</string>
+
+    <string name="action_login">Đăng nhập</string>
+    <string name="action_notification">Thông báo</string>
+    <string name="action_history">Lịch sử</string>
+    <string name="action_saved_news">Tin đã lưu</string>
+    <string name="action_share">Mời bạn bè</string>
+    <string name="action_rating">Đánh giá</string>
+    <string name="action_about">Thông tin</string>
+    <string name="action_save_news">Lưu tin</string>
+    <string name="action_share_news">Chia sẻ ứng dụng với bạn bè</string>
+
+    <string name="toast_source_news">Bạn không chọn ngồn báo. Khôi phục danh sách mặc định</string>
+    <string name="toast_loading">Đang tải...</string>
+    <string name="toast_saved_complete">Đã lưu</string>
+    <string name="toast_you_saved_this_news">Bạn đã lưu tin này</string>
+    <string name="toast_saved_failed">Không thể lưu tin</string>
+    <string name="toast_init_data">Đang khởi tạo dữ liệu...</string>
+    <string name="toast_sorry_we_dont_load_news">Xin lỗi, chúng tôi không tải được nội dung</string>
+    <string name="toast_deleted_news">Đã xóa</string>
+    <string name="toast_delete_news_failed">Xóa thất bại</string>
+    <string name="toast_delete_all_news">Đã xóa tất cả</string>
+    <string name="toast_no_save_news">Không có tin để xóa</string>
+
+    <string name="toast_internet_failed">Không có kết nối mạng</string>
+    <string name="toast_you_need_connent_internet">Bạn cần kết nối mạng</string>
+
+    <string name="toast_dont_news">Không có tin tức mới</string>
+
+    <string name="menu_context_save_news">Lưu tin</string>
+    <string name="menu_context_share">Chia sẻ</string>
+    <string name="menu_context_saving_news">Đang lưu..."</string>
+
+    <!--<string name="facebook_app_id">401495673372377</string>-->
+    <!--<string name="facebook_app_name">Tin tức</string>-->
+
+    <string name="toast_dont_share_news_link">Không thể chia sẻ</string>
+    <string name="toast_share_news_link">Chia sẻ</string>
+
+    <string name="application_play_store">https://play.google.com/store/apps/details?id=social.com.paper</string>
+    <string name="no_network_connection_toast">no_network_connection_toast</string>
+
+</resources>

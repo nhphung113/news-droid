@@ -1,0 +1,6 @@
+<root>
+  <item name='android.app.ActionBar NAVIGATION_MODE_LIST'>
+    <annotation name='org.jetbrains.annotations.Nullable' />
+    <annotation name='java.lang.annotation.Deprecated' />
+  </item>
+</root>
