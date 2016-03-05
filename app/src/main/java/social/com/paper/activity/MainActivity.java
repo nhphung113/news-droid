@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.app.*;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -57,12 +56,12 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        setupinitActionBar();
-        initData();
+        setupActionBar();
+        setupData();
         eventControls();
     }
 
-    private void setupinitActionBar() {
+    private void setupActionBar() {
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
@@ -70,7 +69,7 @@ public class MainActivity extends ActionBarActivity {
         mActionBar.setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_LIST);
     }
 
-    private void initData() {
+    private void setupData() {
         DatabaseHandler db = new DatabaseHandler(getApplicationContext());
         int count = db.countPaper();
         if (count == 0) {
@@ -129,13 +128,9 @@ public class MainActivity extends ActionBarActivity {
             mActionBar.setSelectedNavigationItem(position);
             flagInitData = false;
 
-            Fragment fragment = new NewsListFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt(Variables.KEY_CATEGORY, position);
-            bundle.putSerializable(Variables.KEY_PAPER, mPaperCurrent);
-            fragment.setArguments(bundle);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                    NewsListFragment.newInstance(position, mPaperCurrent)).commit();
+
             return true;
         }
     }

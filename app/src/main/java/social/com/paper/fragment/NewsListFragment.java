@@ -237,6 +237,15 @@ public class NewsListFragment extends Fragment {
             Toast.makeText(getActivity(), R.string.toast_internet_failed, Toast.LENGTH_SHORT).show();
     }
 
+    public static NewsListFragment newInstance(int position, PaperDto mPaperCurrent) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(Variables.KEY_CATEGORY, position);
+        bundle.putSerializable(Variables.KEY_PAPER, mPaperCurrent);
+        NewsListFragment fragment = new NewsListFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     public class LoadNewsListTask extends AsyncTask<Integer, Void, ArrayList<NewsDto>> {
 
         @Override
