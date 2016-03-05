@@ -21,7 +21,7 @@ import social.com.paper.R;
 import social.com.paper.activity.SaveActivity;
 import social.com.paper.dto.NewsDto;
 import social.com.paper.dto.SaveNewsDto;
-import social.com.paper.utils.HelperUtils;
+import social.com.paper.utils.HelpUtils;
 
 /**
  * Created by phung nguyen on 8/8/2015.
@@ -81,7 +81,7 @@ public class SaveAdapter extends BaseAdapter {
 
         holder.textLink.setText(link);
         holder.textTitle.setText(news.getTitle());
-        holder.textTime.setText("Đã lưu " + HelperUtils.MilliToTimeString(new Date().getTime() - saveNewsDto.getCreatedTime()));
+        holder.textTime.setText("Đã lưu " + HelpUtils.MilliToTimeString(new Date().getTime() - saveNewsDto.getCreatedTime()));
 
         return view;
     }

@@ -25,7 +25,7 @@ import social.com.paper.R;
 import social.com.paper.adapter.SaveAdapter;
 import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.SaveNewsDto;
-import social.com.paper.utils.Variables;
+import social.com.paper.utils.Constant;
 
 /**
  * Created by phung nguyen on 8/1/2015.
@@ -130,9 +130,9 @@ public class SaveActivity extends ActionBarActivity implements SwipeRefreshLayou
                 else
                     saveNewsDto = searchList.get(position);
                 if (saveNewsDto != null) {
-                    Intent intent = new Intent(getApplicationContext(), NewsDetailsActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(Variables.KEY_SEND_NEWS_DTO, saveNewsDto.getNewsDto());
+                    bundle.putSerializable(Constant.KEY_SEND_NEWS_DTO, saveNewsDto.getNewsDto());
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }

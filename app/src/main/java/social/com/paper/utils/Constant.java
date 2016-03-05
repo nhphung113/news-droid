@@ -5,7 +5,7 @@ import social.com.paper.R;
 /**
  * Created by phung nguyen on 7/23/2015.
  */
-public class Variables {
+public class Constant {
 
     public static final String[] TIIN_VN_CATEGORIES = {
             "Home", "Sao", "Nhạc", "Phim", "Sành", "Đẹp", "Thể", "24H",

@@ -23,14 +23,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="social.com.paper.activity.SourcePaperActivity"
+            android:name=".activity.SourceActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="social.com.paper.activity.MainActivity" />
         </activity>
         <activity
-            android:name="social.com.paper.activity.NewsDetailsActivity"
+            android:name=".activity.DetailsActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name="social.com.paper.activity.SaveActivity"

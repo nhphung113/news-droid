@@ -1,16 +1,10 @@
 package social.com.paper.task;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import social.com.paper.R;
-import social.com.paper.adapter.NewsListAdapter;
 import social.com.paper.dto.NewsDto;
 import social.com.paper.dto.PaperDto;
 import social.com.paper.utils.RssParser;

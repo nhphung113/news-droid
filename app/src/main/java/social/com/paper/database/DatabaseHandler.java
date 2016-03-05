@@ -16,7 +16,7 @@ import social.com.paper.dto.NewsDto;
 import social.com.paper.dto.PaperDto;
 import social.com.paper.dto.SaveNewsDto;
 import social.com.paper.dto.VariableDto;
-import social.com.paper.utils.Variables;
+import social.com.paper.utils.Constant;
 
 /**
  * Created by phung nguyen on 8/11/2015.
@@ -50,17 +50,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public void initializeData() {
-        for (int i = 0; i < Variables.PAPERS.length; i++) {
+        for (int i = 0; i < Constant.PAPERS.length; i++) {
             PaperDto paperDto = new PaperDto();
-            paperDto.setName(Variables.PAPERS[i]);
-            paperDto.setIcon(Variables.LOGOS[i]);
-            paperDto.setDateFormat(Variables.FORMAT_DATE[i]);
+            paperDto.setName(Constant.PAPERS[i]);
+            paperDto.setIcon(Constant.LOGOS[i]);
+            paperDto.setDateFormat(Constant.FORMAT_DATE[i]);
             paperDto.setChoose((i == 0 ? 1 : 0));
-            paperDto.setActive(Variables.isDefaultPaper(Variables.PAPERS[i]));
+            paperDto.setActive(Constant.isDefaultPaper(Constant.PAPERS[i]));
             int paper_id = insertPaper(paperDto);
 
-            String[] categories = Variables.CATEGORIES[i];
-            String[] links = Variables.LINKS[i];
+            String[] categories = Constant.CATEGORIES[i];
+            String[] links = Constant.LINKS[i];
 
             for (int j = 0; j < categories.length; j++) {
                 CategoryDto categoryDto = new CategoryDto();
@@ -125,7 +125,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String sql = "UPDATE " + PAPER.TABLE_NAME + " SET Active = 1 WHERE " + sqlWhere;
             db.execSQL(sql);
             db.execSQL("UPDATE " + PAPER.TABLE_NAME + " SET Choose = 0");
-            db.execSQL("UPDATE " + PAPER.TABLE_NAME + " SET Choose = 1 WHERE Name = '" + Variables.DEFAULT_PAPERS[0] + "'");
+            db.execSQL("UPDATE " + PAPER.TABLE_NAME + " SET Choose = 1 WHERE Name = '" + Constant.DEFAULT_PAPERS[0] + "'");
             db.close();
         } catch (Exception ex) {
             Log.i(LOG, ex.toString());
@@ -292,7 +292,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void updatePatientActive(ArrayList<PaperDto> paperDtos) {
         try {
             if (paperDtos.size() == 0)
-                updatePatientsActive(Variables.DEFAULT_PAPERS);
+                updatePatientsActive(Constant.DEFAULT_PAPERS);
             else {
                 SQLiteDatabase db = this.getWritableDatabase();
                 String sqlWhere = "";

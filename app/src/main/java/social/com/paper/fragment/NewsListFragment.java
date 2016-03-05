@@ -24,15 +24,15 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import social.com.paper.R;
-import social.com.paper.activity.NewsDetailsActivity;
-import social.com.paper.adapter.NewsListAdapter;
+import social.com.paper.activity.DetailsActivity;
+import social.com.paper.adapter.NewsAdapter;
 import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.NewsDto;
 import social.com.paper.dto.PaperDto;
 import social.com.paper.model.NewsItem;
-import social.com.paper.utils.HelperUtils;
+import social.com.paper.utils.Constant;
+import social.com.paper.utils.HelpUtils;
 import social.com.paper.utils.RssParser;
-import social.com.paper.utils.Variables;
 
 import android.support.v4.app.Fragment;
 
@@ -45,7 +45,7 @@ public class NewsListFragment extends Fragment {
     @Bind(R.id.lvNewsList) ListView mListView;
     @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
 
-    NewsListAdapter mAdapter;
+    NewsAdapter mAdapter;
     ArrayList<NewsItem> newsItemLst = new ArrayList<>();
     public static ArrayList<NewsDto> newsDtoLst = new ArrayList<>();
     PaperDto paperDto;
@@ -124,7 +124,7 @@ public class NewsListFragment extends Fragment {
     private void saveNews(NewsDto newsDto) {
         DatabaseHandler db = new DatabaseHandler(getActivity());
         if (!db.existsSaveNews(newsDto)) {
-            if (HelperUtils.isConnectingToInternet(getActivity())) {
+            if (HelpUtils.isConnectingToInternet(getActivity())) {
                 mDialogSaveNews = new ProgressDialog(getActivity());
                 mDialogSaveNews.setMessage(getResources().getString(R.string.menu_context_saving_news));
                 mDialogSaveNews.setCancelable(false);
@@ -152,11 +152,11 @@ public class NewsListFragment extends Fragment {
                 NewsItem newsItem = newsItemLst.get(position);
                 newsItem.setPaperName(paperDto.getName());
 
-                Intent intent = new Intent(getActivity(), NewsDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), DetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Variables.KEY_SEND_NEWS_DTO, newsDto);
-                bundle.putSerializable(Variables.KEY_SEND_NEWS_ITEM, newsItem);
-                bundle.putString(Variables.KEY_SEND_PAPER_NAME, paperDto.getName());
+                bundle.putSerializable(Constant.KEY_SEND_NEWS_DTO, newsDto);
+                bundle.putSerializable(Constant.KEY_SEND_NEWS_ITEM, newsItem);
+                bundle.putString(Constant.KEY_SEND_PAPER_NAME, paperDto.getName());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -203,7 +203,7 @@ public class NewsListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 mSwipeRefreshLayout.setRefreshing(true);
-                if (HelperUtils.isConnectingToInternet(getActivity())) {
+                if (HelpUtils.isConnectingToInternet(getActivity())) {
                     new LoadNewsListTask().execute(positionCate);
                 } else
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -215,15 +215,15 @@ public class NewsListFragment extends Fragment {
         mSwipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
 
         newsItemLst = new ArrayList<>();
-        mAdapter = new NewsListAdapter(getActivity(), newsItemLst);
+        mAdapter = new NewsAdapter(getActivity(), newsItemLst);
 
         mListView.setAdapter(mAdapter);
 
-        if (HelperUtils.isConnectingToInternet(getActivity())) {
+        if (HelpUtils.isConnectingToInternet(getActivity())) {
             Bundle bundle = this.getArguments();
             if (bundle != null) {
-                positionCate = bundle.getInt(Variables.KEY_CATEGORY);
-                paperDto = (PaperDto) bundle.getSerializable(Variables.KEY_PAPER);
+                positionCate = bundle.getInt(Constant.KEY_CATEGORY);
+                paperDto = (PaperDto) bundle.getSerializable(Constant.KEY_PAPER);
                 link = paperDto.getCategories().get(positionCate).getRssLink();
             }
 
@@ -239,8 +239,8 @@ public class NewsListFragment extends Fragment {
 
     public static NewsListFragment newInstance(int position, PaperDto mPaperCurrent) {
         Bundle bundle = new Bundle();
-        bundle.putInt(Variables.KEY_CATEGORY, position);
-        bundle.putSerializable(Variables.KEY_PAPER, mPaperCurrent);
+        bundle.putInt(Constant.KEY_CATEGORY, position);
+        bundle.putSerializable(Constant.KEY_PAPER, mPaperCurrent);
         NewsListFragment fragment = new NewsListFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -264,7 +264,7 @@ public class NewsListFragment extends Fragment {
                 } else {
                     newsDtoLst = list;
                     newsItemLst = new ArrayList<>();
-                    PAGE_NUMBER = list.size() / Variables.NUMBERS_NEWS_ON_LIST;
+                    PAGE_NUMBER = list.size() / Constant.NUMBERS_NEWS_ON_LIST;
                     for (int i = 0; i < list.size() / PAGE_NUMBER; i++) {
                         NewsDto newsDto = list.get(i);
                         NewsItem item = new NewsItem();
@@ -278,7 +278,7 @@ public class NewsListFragment extends Fragment {
                     }
 
                     try {
-                        mAdapter = new NewsListAdapter(getActivity(), newsItemLst);
+                        mAdapter = new NewsAdapter(getActivity(), newsItemLst);
                         mListView.setAdapter(mAdapter);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -304,7 +304,7 @@ public class NewsListFragment extends Fragment {
             try {
                 newsDto = params[0];
                 document = Jsoup.connect(newsDto.getLink()).get();
-                return HelperUtils.getPaperContentHtml(document, paperDto.getName());
+                return HelpUtils.getPaperContentHtml(document, paperDto.getName());
             } catch (IOException e) {
                 e.printStackTrace();
                 document = null;

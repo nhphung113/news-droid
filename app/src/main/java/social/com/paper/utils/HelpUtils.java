@@ -9,7 +9,7 @@ import org.jsoup.nodes.Document;
 /**
  * Created by phung nguyen on 8/4/2015.
  */
-public class HelperUtils {
+public class HelpUtils {
 
     public static String MilliToTimeString(long milliseconds) {
         String result = "";
@@ -39,13 +39,13 @@ public class HelperUtils {
 
     public static String getPaperContentHtml(Document document, String paperName) {
         String html = "";
-        String[] contentKeys = Variables.PAPER_CONTENT_KEY[Variables.getPositionPaper(paperName)];
+        String[] contentKeys = Constant.PAPER_CONTENT_KEY[Constant.getPositionPaper(paperName)];
         for (int i = 0; i < contentKeys.length; i++) {
             if (html == "") {
-                String isClass = contentKeys[i].substring(0, Variables.PAPER_CONTENT_KEY_GET.length());
-                String content_key = contentKeys[i].substring(Variables.PAPER_CONTENT_KEY_GET.length());
+                String isClass = contentKeys[i].substring(0, Constant.PAPER_CONTENT_KEY_GET.length());
+                String content_key = contentKeys[i].substring(Constant.PAPER_CONTENT_KEY_GET.length());
                 try {
-                    if (isClass.equalsIgnoreCase(Variables.PAPER_CONTENT_KEY_DELETE))
+                    if (isClass.equalsIgnoreCase(Constant.PAPER_CONTENT_KEY_DELETE))
                         document.select(content_key).first().remove();
                     else
                         html += document.select(content_key).first().html();

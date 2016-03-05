@@ -43,7 +43,7 @@ public class TableUtils {
     }
 
     public static abstract class VARIABLES implements BaseColumns {
-        public static final String TABLE_NAME = "Variables";
+        public static final String TABLE_NAME = "Constant";
         public static final String COLUMN_ID = "Id";
         public static final String COLUMN_NAME = "Name";
         public static final String COLUMN_VALUE = "Value";

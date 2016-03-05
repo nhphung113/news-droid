@@ -23,13 +23,13 @@ import social.com.paper.R;
 import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.NewsDto;
 import social.com.paper.model.NewsItem;
-import social.com.paper.utils.HelperUtils;
-import social.com.paper.utils.Variables;
+import social.com.paper.utils.Constant;
+import social.com.paper.utils.HelpUtils;
 
 /**
  * Created by phung nguyen on 7/23/2015.
  */
-public class NewsDetailsActivity extends ActionBarActivity {
+public class DetailsActivity extends ActionBarActivity {
     @Bind(R.id.webView) WebView myWebView;
     NewsDto newsDto;
     NewsItem newsItem;
@@ -56,11 +56,11 @@ public class NewsDetailsActivity extends ActionBarActivity {
         myWebView.getSettings().setDisplayZoomControls(false);
         myWebView.getSettings().setDefaultTextEncodingName("utf-8");
 
-        newsDto = (NewsDto) getIntent().getExtras().getSerializable(Variables.KEY_SEND_NEWS_DTO);
+        newsDto = (NewsDto) getIntent().getExtras().getSerializable(Constant.KEY_SEND_NEWS_DTO);
         setTitle(newsDto.getTitle());
 
-        newsItem = (NewsItem) getIntent().getExtras().getSerializable(Variables.KEY_SEND_NEWS_ITEM);
-        paperName = getIntent().getStringExtra(Variables.KEY_SEND_PAPER_NAME);
+        newsItem = (NewsItem) getIntent().getExtras().getSerializable(Constant.KEY_SEND_NEWS_ITEM);
+        paperName = getIntent().getStringExtra(Constant.KEY_SEND_PAPER_NAME);
 
         if (paperName != null) {
             DatabaseHandler db = new DatabaseHandler(getApplicationContext());
@@ -118,7 +118,7 @@ public class NewsDetailsActivity extends ActionBarActivity {
         if (db.existsSaveNews(newsDto))
             Toast.makeText(getApplicationContext(), R.string.toast_you_saved_this_news, Toast.LENGTH_SHORT).show();
         else {
-            if (HelperUtils.isConnectingToInternet(getApplicationContext())) {
+            if (HelpUtils.isConnectingToInternet(getApplicationContext())) {
                 if (db.insertSaveNews(newsDto) != 0)
                     Toast.makeText(getApplicationContext(), R.string.toast_saved_complete, Toast.LENGTH_SHORT).show();
             } else
@@ -131,15 +131,15 @@ public class NewsDetailsActivity extends ActionBarActivity {
 
         public String getContent(Document document) {
             String html = "";
-            String[] contentKeys = Variables.PAPER_CONTENT_KEY[Variables.getPositionPaper(paperName)];
+            String[] contentKeys = Constant.PAPER_CONTENT_KEY[Constant.getPositionPaper(paperName)];
             for (int i = 0; i < contentKeys.length; i++) {
                 if (html.equalsIgnoreCase("")) {
-                    String isClass = contentKeys[i].substring(0, Variables.PAPER_CONTENT_KEY_GET.length());
-                    String content_key = contentKeys[i].substring(Variables.PAPER_CONTENT_KEY_GET.length());
+                    String isClass = contentKeys[i].substring(0, Constant.PAPER_CONTENT_KEY_GET.length());
+                    String content_key = contentKeys[i].substring(Constant.PAPER_CONTENT_KEY_GET.length());
                     try {
-                        if (isClass.equalsIgnoreCase(Variables.PAPER_CONTENT_KEY_DELETE))
+                        if (isClass.equalsIgnoreCase(Constant.PAPER_CONTENT_KEY_DELETE))
                             document.select(content_key).first().remove();
-                        else if (isClass.equalsIgnoreCase(Variables.PAPER_CONTENT_TAG_KEY_DELETE))
+                        else if (isClass.equalsIgnoreCase(Constant.PAPER_CONTENT_TAG_KEY_DELETE))
                             document.getElementsByTag(content_key).first().remove();
                         else
                             html += document.select(content_key).first().html();

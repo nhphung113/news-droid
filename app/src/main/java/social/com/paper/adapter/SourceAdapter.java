@@ -15,17 +15,17 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import social.com.paper.R;
-import social.com.paper.activity.SourcePaperActivity;
+import social.com.paper.activity.SourceActivity;
 import social.com.paper.dto.PaperDto;
 
 /**
  * Created by phung nguyen on 7/29/2015.
  */
-public class SourcePapersAdapter extends BaseAdapter {
+public class SourceAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<PaperDto> data;
 
-    public SourcePapersAdapter(Context context, ArrayList<PaperDto> list) {
+    public SourceAdapter(Context context, ArrayList<PaperDto> list) {
         this.context = context;
         this.data = list;
     }
@@ -62,7 +62,7 @@ public class SourcePapersAdapter extends BaseAdapter {
 
         holder.image.setImageDrawable(context.getResources().getDrawable(item.getIcon()));
         holder.name.setText(item.getName());
-        if (SourcePaperActivity.choosePaperMap.containsKey(item.getId()))
+        if (SourceActivity.choosePaperMap.containsKey(item.getId()))
             holder.checkbox.setChecked(true);
         else
             holder.checkbox.setChecked(false);
@@ -73,18 +73,18 @@ public class SourcePapersAdapter extends BaseAdapter {
                 if (!holder.checkbox.isChecked()) {
                     holder.checkbox.setChecked(false);
                     int p = 0;
-                    for (int i = 0; i < SourcePaperActivity.choosePapers.size(); i++) {
-                        if (SourcePaperActivity.choosePapers.get(i).getId() == item.getId()) {
+                    for (int i = 0; i < SourceActivity.choosePapers.size(); i++) {
+                        if (SourceActivity.choosePapers.get(i).getId() == item.getId()) {
                             p = i;
                             break;
                         }
                     }
-                    SourcePaperActivity.choosePapers.remove(p);
-                    SourcePaperActivity.choosePaperMap.remove(item.getId());
+                    SourceActivity.choosePapers.remove(p);
+                    SourceActivity.choosePaperMap.remove(item.getId());
                 } else {
                     holder.checkbox.setChecked(true);
-                    SourcePaperActivity.choosePapers.add(item);
-                    SourcePaperActivity.choosePaperMap.put(item.getId(), item.getId());
+                    SourceActivity.choosePapers.add(item);
+                    SourceActivity.choosePaperMap.put(item.getId(), item.getId());
                 }
             }
         });

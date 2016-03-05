@@ -1,7 +1,6 @@
 package social.com.paper.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,21 +8,24 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import social.com.paper.R;
-import social.com.paper.dto.PaperDto;
+import social.com.paper.model.NewsItem;
 
 /**
- * Created by phung nguyen on 7/21/2015.
+ * Created by phung nguyen on 7/22/2015.
  */
-public class PapersListAdapter extends BaseAdapter {
-    private Context context;
-    private ArrayList<PaperDto> data;
+public class NewsAdapter extends BaseAdapter {
 
-    public PapersListAdapter(Context context, ArrayList<PaperDto> data) {
+    Activity context;
+    ArrayList<NewsItem> data;
+
+    public NewsAdapter(Activity context, ArrayList<NewsItem> data) {
         this.context = context;
         this.data = data;
     }
@@ -40,7 +42,7 @@ public class PapersListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return 0;
     }
 
     @Override
@@ -50,20 +52,27 @@ public class PapersListAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         } else {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.paper_item, parent, false);
+            view = inflater.inflate(R.layout.news_item, parent, false);
             holder = new ViewHolder(view);
             view.setTag(holder);
         }
 
-        holder.icon.setImageResource(data.get(position).getIcon());
-        holder.title.setText(data.get(position).getName());
+        NewsItem news = data.get(position);
+        holder.textTitle.setText(news.getTitle());
+        holder.textCatName.setText(news.getCategoryName());
+        holder.textShort.setText(news.getShortNews());
+        holder.textTime.setText(news.getTimeAgoString());
+        Glide.with(context).load(news.getImageLink()).fitCenter().placeholder(R.drawable.ic_photos).crossFade().into(holder.image);
 
         return view;
     }
 
     static class ViewHolder {
-        @Bind(R.id.icon) ImageView icon;
-        @Bind(R.id.title) TextView title;
+        @Bind(R.id.image) ImageView image;
+        @Bind(R.id.textTitle) TextView textTitle;
+        @Bind(R.id.textShort) TextView textShort;
+        @Bind(R.id.textTime) TextView textTime;
+        @Bind(R.id.textCatName) TextView textCatName;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

@@ -23,12 +23,12 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import social.com.paper.R;
-import social.com.paper.adapter.PapersListAdapter;
+import social.com.paper.adapter.PaperAdapter;
 import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.PaperDto;
 import social.com.paper.dto.VariableDto;
 import social.com.paper.fragment.NewsListFragment;
-import social.com.paper.utils.Variables;
+import social.com.paper.utils.Constant;
 
 /**
  * Created by phung nguyen on 7/23/2015.
@@ -78,7 +78,7 @@ public class MainActivity extends ActionBarActivity {
         if (count == 0) {
             Toast.makeText(getApplicationContext(), R.string.toast_init_data, Toast.LENGTH_LONG).show();
             db.initializeData();
-        } else if (count != Variables.PAPERS.length) {
+        } else if (count != Constant.PAPERS.length) {
             getApplicationContext().deleteDatabase(DatabaseHandler.DATABASE_NAME);
             DatabaseHandler db1 = new DatabaseHandler(getApplicationContext());
             Toast.makeText(getApplicationContext(), R.string.toast_init_data, Toast.LENGTH_LONG).show();
@@ -100,7 +100,7 @@ public class MainActivity extends ActionBarActivity {
             db.updatePatientChoose(mPaperCurrent);
         }
 
-        adapterPaper = new PapersListAdapter(getApplicationContext(), mPaperList);
+        adapterPaper = new PaperAdapter(getApplicationContext(), mPaperList);
         lvDrawerPaperList.setAdapter(adapterPaper);
         lvDrawerPaperList.setItemChecked(mPositionPaperCurrent, true);
         lvDrawerPaperList.setSelection(mPositionPaperCurrent);
@@ -116,17 +116,17 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public boolean onNavigationItemSelected(int position, long itemId) {
             DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-            String posCate = db.getVariableByName(Variables.KEY_CATEGORY_POSITION);
+            String posCate = db.getVariableByName(Constant.KEY_CATEGORY_POSITION);
             if (posCate == "")
-                db.insertVariable(new VariableDto(Variables.KEY_CATEGORY_POSITION, position + ""));
+                db.insertVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
             else if (flagInitData && posCate != "") {
                 int pos = Integer.parseInt(posCate);
                 if (pos <= mPaperCurrent.getCategories().size()) {
                     position = pos;
-                    db.updateVariable(new VariableDto(Variables.KEY_CATEGORY_POSITION, position + ""));
+                    db.updateVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
                 }
             } else
-                db.updateVariable(new VariableDto(Variables.KEY_CATEGORY_POSITION, position + ""));
+                db.updateVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
 
             mActionBar.setSelectedNavigationItem(position);
             flagInitData = false;
@@ -190,7 +190,7 @@ public class MainActivity extends ActionBarActivity {
         }
         int id = item.getItemId();
         if (id == R.id.action_add_papers) {
-            Intent intent = new Intent(MainActivity.this, SourcePaperActivity.class);
+            Intent intent = new Intent(MainActivity.this, SourceActivity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_saved_news) {

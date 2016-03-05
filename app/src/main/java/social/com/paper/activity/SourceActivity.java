@@ -17,18 +17,18 @@ import java.util.HashMap;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import social.com.paper.R;
-import social.com.paper.adapter.SourcePapersAdapter;
+import social.com.paper.adapter.SourceAdapter;
 import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.PaperDto;
 
 /**
  * Created by phung nguyen on 7/29/2015.
  */
-public class SourcePaperActivity extends ActionBarActivity implements Serializable {
+public class SourceActivity extends ActionBarActivity implements Serializable {
     Menu menu;
     @Bind(R.id.listView) ListView listView;
 
-    SourcePapersAdapter adapter;
+    SourceAdapter adapter;
 
     public static ArrayList<PaperDto> allPapers = new ArrayList<>();
     public static ArrayList<PaperDto> choosePapers = new ArrayList<>();
@@ -78,7 +78,7 @@ public class SourcePaperActivity extends ActionBarActivity implements Serializab
         for (int i = 0; i < choosePapers.size(); i++)
             choosePaperMap.put(choosePapers.get(i).getId(), choosePapers.get(i).getId());
 
-        adapter = new SourcePapersAdapter(getApplicationContext(), allPapers);
+        adapter = new SourceAdapter(getApplicationContext(), allPapers);
         listView.setAdapter(adapter);
     }
 
