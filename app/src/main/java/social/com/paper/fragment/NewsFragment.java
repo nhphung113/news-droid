@@ -276,13 +276,13 @@ public class NewsFragment extends Fragment {
                 // create "save" item
                 SwipeMenuItem saveItem = new SwipeMenuItem(getActivity());
                 saveItem.setWidth(200);
-                saveItem.setIcon(R.drawable.ic_save_news);
+                saveItem.setIcon(R.drawable.ic_save_black);
                 menu.addMenuItem(saveItem);
 
                 // create "share" item
                 SwipeMenuItem shareItem = new SwipeMenuItem(getActivity());
                 shareItem.setWidth(200);
-                shareItem.setIcon(R.drawable.ic_share_black_36dp);
+                shareItem.setIcon(R.drawable.ic_share_black);
                 menu.addMenuItem(shareItem);
             }
         };

@@ -76,7 +76,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/ic_delete_item" />
+            android:background="@drawable/ic_clear_black" />
     </LinearLayout>
 
 </LinearLayout>
