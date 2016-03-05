@@ -40,11 +40,6 @@ public class SourcePaperActivity extends ActionBarActivity implements Serializab
         setContentView(R.layout.activity_source_papers);
         ButterKnife.bind(this);
 
-        init();
-        event();
-    }
-
-    private void event() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -69,9 +64,7 @@ public class SourcePaperActivity extends ActionBarActivity implements Serializab
                 }
             }
         });
-    }
 
-    private void init() {
         setTitle(R.string.action_add_papers);
 
         getSupportActionBar().setHomeButtonEnabled(true);
