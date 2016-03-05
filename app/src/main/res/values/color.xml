@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="list_item_title">#000000</color>
-    <color name="list_background">#FFFFFF</color>
+    <color name="colorPrimary">#E47D22</color>
+
     <color name="list_background_pressed">#DEDEDE</color>
-    <color name="list_divider">#FFFFFF</color>
-    <color name="counter_text_bg">#FFFFFF</color>
-    <color name="counter_text_color">#FFFFFF</color>
     <color name="source_paper_item_selected">#57dd86</color>
-    <color name="source_paper_item">#FFFFFF</color>
     <string-array name="movie_serial_bg">
         <item>#24c6d5</item>
         <item>#57dd86</item>
@@ -16,4 +12,5 @@
         <item>#fcba59</item>
         <item>#24c6d5</item>
     </string-array>
+
 </resources>
