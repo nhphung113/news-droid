@@ -7,10 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import social.com.paper.R;
 import social.com.paper.dto.PaperDto;
 
@@ -19,20 +22,21 @@ import social.com.paper.dto.PaperDto;
  */
 public class PapersListAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<PaperDto> papers;
-    public PapersListAdapter(Context context, ArrayList<PaperDto> list)
-    {
+    private ArrayList<PaperDto> data;
+
+    public PapersListAdapter(Context context, ArrayList<PaperDto> data) {
         this.context = context;
-        this.papers = list;
+        this.data = data;
     }
+
     @Override
     public int getCount() {
-        return papers.size();
+        return data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return data.get(position);
     }
 
     @Override
@@ -41,18 +45,29 @@ public class PapersListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null)
-        {
-            LayoutInflater mInflater = (LayoutInflater)context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.custom_paper_list_item, null);
+    public View getView(int position, View view, ViewGroup parent) {
+        ViewHolder holder;
+        if (view != null) {
+            holder = (ViewHolder) view.getTag();
+        } else {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.custom_paper_list_item, parent, false);
+            holder = new ViewHolder(view);
+            view.setTag(holder);
         }
-        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
-        TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
 
-        imgIcon.setImageResource(papers.get(position).getIcon());
-        txtTitle.setText(papers.get(position).getName());
+        holder.icon.setImageResource(data.get(position).getIcon());
+        holder.title.setText(data.get(position).getName());
 
-        return convertView;
+        return view;
+    }
+
+    static class ViewHolder {
+        @Bind(R.id.icon) ImageView icon;
+        @Bind(R.id.title) TextView title;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

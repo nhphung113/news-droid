@@ -2,21 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#ffffff"
     android:orientation="horizontal"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="10dp">
+    android:padding="8dp" >
 
     <ImageView
-        android:id="@+id/ivNews"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:layout_marginRight="5dp" />
+        android:id="@+id/image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="8dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -24,7 +17,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvTitleNews"
+            android:id="@+id/textTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ngôi nhà 115 m2 ngập gió trời ở Sài Gòn"
@@ -32,7 +25,7 @@
             android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/tvShortNews"
+            android:id="@+id/textShort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -47,7 +40,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvCategoryName"
+                android:id="@+id/textCatName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Kinh doanh"
@@ -60,7 +53,7 @@
                 android:text=" - " />
 
             <TextView
-                android:id="@+id/tvTimeAgo"
+                android:id="@+id/textTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="21 phút trước" />

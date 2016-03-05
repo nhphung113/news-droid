@@ -5,71 +5,96 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.Date;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import social.com.paper.R;
 import social.com.paper.activity.SaveActivity;
 import social.com.paper.dto.NewsDto;
 import social.com.paper.dto.SaveNewsDto;
-import social.com.paper.fragment.NewsFragment;
 import social.com.paper.utils.HelperUtils;
 
 /**
  * Created by phung nguyen on 8/8/2015.
  */
-public class SaveAdapter extends ArrayAdapter<SaveNewsDto> {
+public class SaveAdapter extends BaseAdapter {
 
     Context context;
-    int layoutId;
     ArrayList<SaveNewsDto> data;
 
-    public SaveAdapter(Context context, int resource, ArrayList<SaveNewsDto> objects) {
-        super(context, resource, objects);
+    public SaveAdapter(Context context, ArrayList<SaveNewsDto> data) {
         this.context = context;
-        this.layoutId = resource;
-        this.data = objects;
+        this.data = data;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(layoutId, null);
+    public int getCount() {
+        return data.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return data.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View view, ViewGroup parent) {
+        ViewHolder holder;
+        if (view != null) {
+            holder = (ViewHolder) view.getTag();
+        } else {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.custom_saved_item, parent, false);
+            holder = new ViewHolder(view);
+            view.setTag(holder);
         }
-        final NewsDto newsDto = data.get(position).getNewsDto();
+
+        NewsDto news = data.get(position).getNewsDto();
         final SaveNewsDto saveNewsDto = data.get(position);
 
-        ImageView ivIc = (ImageView) convertView.findViewById(R.id.ivSaveIcPaper);
-        TextView tvLink = (TextView) convertView.findViewById(R.id.tvSaveLink);
-        TextView tvViewedTime = (TextView) convertView.findViewById(R.id.tvSaveTime);
-        TextView tvTitle = (TextView) convertView.findViewById(R.id.tvSaveTitle);
-        LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.layoutCbDelete);
-        linearLayout.setOnClickListener(new View.OnClickListener() {
+        holder.layoutDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SaveActivity.deleteSaveNews(saveNewsDto, context);
             }
         });
 
-        String link = newsDto.getLink().length() > 40 ? newsDto.getLink().substring(0, 40) + "..." : newsDto.getLink() + "...";
-//        Bitmap bitmap = null;
-//        if (newsDto.getImage()!= null)
-//            bitmap = BitmapFactory.decodeByteArray(newsDto.getImage(), 0, newsDto.getImage().length);
+        String link = news.getLink().length() > 40 ? news.getLink().substring(0, 40) + "..." : news.getLink() + "...";
 
-        NewsFragment.mImageFetcher.loadImage(newsDto.getImageLink(), ivIc);
+        Glide.with(context).load(link)
+                .fitCenter().placeholder(R.drawable.ic_photos)
+                .crossFade().into(holder.image);
 
-//        ivIc.setImageBitmap(bitmap);
-        tvLink.setText(link);
-        tvTitle.setText(newsDto.getTitle());
-        long time = new Date().getTime();
-        long time2 = time - saveNewsDto.getCreatedTime();
-        tvViewedTime.setText("Đã lưu " + HelperUtils.MilliToTimeString(time2));
-        return convertView;
+        holder.textLink.setText(link);
+        holder.textTitle.setText(news.getTitle());
+        holder.textTime.setText("Đã lưu " + HelperUtils.MilliToTimeString(new Date().getTime() - saveNewsDto.getCreatedTime()));
+
+        return view;
+    }
+
+    static class ViewHolder {
+        @Bind(R.id.ivSaveIcPaper) ImageView image;
+        @Bind(R.id.tvLink) TextView textLink;
+        @Bind(R.id.tvTime) TextView textTime;
+        @Bind(R.id.tvTitle) TextView textTitle;
+        @Bind(R.id.layoutDelete) LinearLayout layoutDelete;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

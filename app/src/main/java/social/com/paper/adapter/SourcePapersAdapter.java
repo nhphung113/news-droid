@@ -5,13 +5,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import social.com.paper.R;
 import social.com.paper.activity.SourcePaperActivity;
 import social.com.paper.dto.PaperDto;
@@ -19,42 +21,57 @@ import social.com.paper.dto.PaperDto;
 /**
  * Created by phung nguyen on 7/29/2015.
  */
-public class SourcePapersAdapter extends ArrayAdapter<PaperDto> {
+public class SourcePapersAdapter extends BaseAdapter {
     private Context context;
-    private int layoutId;
-    private ArrayList<PaperDto> list;
+    private ArrayList<PaperDto> data;
 
-    public SourcePapersAdapter(Context context, int layout_id, ArrayList<PaperDto> list) {
-        super(context, layout_id, list);
+    public SourcePapersAdapter(Context context, ArrayList<PaperDto> list) {
         this.context = context;
-        this.layoutId = layout_id;
-        this.list = list;
+        this.data = list;
     }
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(layoutId, null);
+    public int getCount() {
+        return data.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return data.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View view, ViewGroup parent) {
+        final ViewHolder holder;
+        if (view != null) {
+            holder = (ViewHolder) view.getTag();
+        } else {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.custom_cource_item, parent, false);
+            holder = new ViewHolder(view);
+            view.setTag(holder);
         }
-        ImageView ivImage = (ImageView) convertView.findViewById(R.id.ivUpdatePaper);
-        TextView tvPaperName = (TextView) convertView.findViewById(R.id.tvUpdatePaperName);
-        final CheckBox cb = (CheckBox) convertView.findViewById(R.id.cbUpdatePaper);
-        final PaperDto item = list.get(position);
 
-        ivImage.setImageDrawable(context.getResources().getDrawable(item.getIcon()));
-        tvPaperName.setText(item.getName());
+        final PaperDto item = data.get(position);
+
+        holder.image.setImageDrawable(context.getResources().getDrawable(item.getIcon()));
+        holder.name.setText(item.getName());
         if (SourcePaperActivity.choosePaperMap.containsKey(item.getId()))
-            cb.setChecked(true);
+            holder.checkbox.setChecked(true);
         else
-            cb.setChecked(false);
+            holder.checkbox.setChecked(false);
 
-        cb.setOnClickListener(new View.OnClickListener() {
+        holder.checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!cb.isChecked()) {
-                    cb.setChecked(false);
+                if (!holder.checkbox.isChecked()) {
+                    holder.checkbox.setChecked(false);
                     int p = 0;
                     for (int i = 0; i < SourcePaperActivity.choosePapers.size(); i++) {
                         if (SourcePaperActivity.choosePapers.get(i).getId() == item.getId()) {
@@ -65,13 +82,23 @@ public class SourcePapersAdapter extends ArrayAdapter<PaperDto> {
                     SourcePaperActivity.choosePapers.remove(p);
                     SourcePaperActivity.choosePaperMap.remove(item.getId());
                 } else {
-                    cb.setChecked(true);
+                    holder.checkbox.setChecked(true);
                     SourcePaperActivity.choosePapers.add(item);
                     SourcePaperActivity.choosePaperMap.put(item.getId(), item.getId());
                 }
             }
         });
 
-        return convertView;
+        return view;
+    }
+
+    static class ViewHolder {
+        @Bind(R.id.image) ImageView image;
+        @Bind(R.id.textName) TextView name;
+        @Bind(R.id.checkPaper) CheckBox checkbox;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

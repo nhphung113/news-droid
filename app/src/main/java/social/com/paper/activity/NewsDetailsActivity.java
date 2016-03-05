@@ -17,6 +17,8 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.Date;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import social.com.paper.R;
 import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.NewsDto;
@@ -28,7 +30,7 @@ import social.com.paper.utils.Variables;
  * Created by phung nguyen on 7/23/2015.
  */
 public class NewsDetailsActivity extends ActionBarActivity {
-    WebView myWebView;
+    @Bind(R.id.webView) WebView myWebView;
     NewsDto newsDto;
     NewsItem newsItem;
     String paperName;
@@ -40,12 +42,13 @@ public class NewsDetailsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_details);
 
+        ButterKnife.bind(this);
+
         ticks = (new Date().getTime());
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
-        myWebView = (WebView) findViewById(R.id.webView);
         myWebView.getSettings().setLoadsImagesAutomatically(true);
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -68,6 +71,7 @@ public class NewsDetailsActivity extends ActionBarActivity {
                 dialog = new ProgressDialog(this);
                 dialog.setMessage(getResources().getString(R.string.toast_loading));
                 dialog.show();
+                dialog.setCancelable(false);
                 new MyBrowserTask().execute(newsDto.getLink());
             }
         } else {
@@ -83,11 +87,17 @@ public class NewsDetailsActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int _id = item.getItemId();
-        if (_id == R.id.menu_action_save_news)
-            saveNews();
-        else if (_id == R.id.menu_action_share_news)
-            shareNews(newsDto);
+        switch (item.getItemId()) {
+            case R.id.menu_action_save_news:
+                saveNews();
+                break;
+            case R.id.menu_action_share_news:
+                shareNews(newsDto);
+                break;
+            case android.R.id.home:
+                finish();
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -21,27 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="social.com.paper.activity.NewsDetailsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="social.com.paper.activity.MainActivity" />
-        </activity>
         <activity android:name="social.com.paper.activity.SourcePaperActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="social.com.paper.activity.MainActivity" />
         </activity>
-
-        <activity android:name="social.com.paper.activity.SaveActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="social.com.paper.activity.MainActivity" />
-        </activity>
-        <activity android:name="social.com.paper.activity.AboutActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="social.com.paper.activity.MainActivity" />
-        </activity>
+        <activity android:name="social.com.paper.activity.NewsDetailsActivity"></activity>
+        <activity android:name="social.com.paper.activity.SaveActivity"></activity>
+        <activity android:name="social.com.paper.activity.AboutActivity"></activity>
     </application>
 
 </manifest>

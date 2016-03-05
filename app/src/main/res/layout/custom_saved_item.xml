@@ -28,7 +28,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvSaveTitle"
+            android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -42,7 +42,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvSaveLink"
+                android:id="@+id/tvLink"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:text="www.vnexpress.net..."
@@ -51,7 +51,7 @@
 
 
             <TextView
-                android:id="@+id/tvSaveTime"
+                android:id="@+id/tvTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đã lưu 10 phút trước"
@@ -62,7 +62,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutCbDelete"
+        android:id="@+id/layoutDelete"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_weight="10"
@@ -77,6 +77,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/ic_clear_black" />
+
     </LinearLayout>
 
 </LinearLayout>

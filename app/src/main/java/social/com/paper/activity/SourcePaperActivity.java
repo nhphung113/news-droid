@@ -14,6 +14,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import social.com.paper.R;
 import social.com.paper.adapter.SourcePapersAdapter;
 import social.com.paper.database.DatabaseHandler;
@@ -24,7 +26,8 @@ import social.com.paper.dto.PaperDto;
  */
 public class SourcePaperActivity extends ActionBarActivity implements Serializable {
     Menu menu;
-    ListView listView;
+    @Bind(R.id.listView) ListView listView;
+
     SourcePapersAdapter adapter;
 
     public static ArrayList<PaperDto> allPapers = new ArrayList<>();
@@ -35,6 +38,8 @@ public class SourcePaperActivity extends ActionBarActivity implements Serializab
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_source_papers);
+        ButterKnife.bind(this);
+
         init();
         event();
     }
@@ -43,7 +48,7 @@ public class SourcePaperActivity extends ActionBarActivity implements Serializab
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CheckBox checkBox = (CheckBox) view.findViewById(R.id.cbUpdatePaper);
+                CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkPaper);
                 PaperDto item = allPapers.get(position);
                 if (checkBox.isChecked()) {
                     checkBox.setChecked(false);
@@ -68,7 +73,7 @@ public class SourcePaperActivity extends ActionBarActivity implements Serializab
 
     private void init() {
         setTitle(R.string.action_add_papers);
-        listView = (ListView) findViewById(R.id.listView);
+
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -80,7 +85,7 @@ public class SourcePaperActivity extends ActionBarActivity implements Serializab
         for (int i = 0; i < choosePapers.size(); i++)
             choosePaperMap.put(choosePapers.get(i).getId(), choosePapers.get(i).getId());
 
-        adapter = new SourcePapersAdapter(getApplicationContext(), R.layout.custom_cource_item, allPapers);
+        adapter = new SourcePapersAdapter(getApplicationContext(), allPapers);
         listView.setAdapter(adapter);
     }
 
@@ -95,21 +100,24 @@ public class SourcePaperActivity extends ActionBarActivity implements Serializab
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-            db.updatePatientActive(choosePapers);
-        } else if (id == R.id.menu_action_add_all) {
-            addPaperAll();
-        } else if (id == R.id.menu_action_cancel_all) {
-            cancelPaperAll();
+        switch (item.getItemId()) {
+            case R.id.menu_action_add_all:
+                addPaperAll();
+                break;
+            case R.id.menu_action_cancel_all:
+                cancelPaperAll();
+                break;
+            case android.R.id.home:
+                DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                db.updatePatientActive(choosePapers);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void emptyPaper() {
-        choosePapers = new ArrayList<>();
-        choosePaperMap = new HashMap<>();
+        choosePaperMap.clear();
+        choosePapers.clear();
     }
 
     private void cancelPaperAll() {

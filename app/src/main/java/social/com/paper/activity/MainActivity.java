@@ -1,6 +1,5 @@
 package social.com.paper.activity;
 
-import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -17,17 +16,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import social.com.paper.R;
 import social.com.paper.adapter.PapersListAdapter;
 import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.PaperDto;
 import social.com.paper.dto.VariableDto;
-import social.com.paper.fragment.NewsFragment;
+import social.com.paper.fragment.NewsListFragment;
 import social.com.paper.utils.Variables;
 
 /**
@@ -35,8 +35,8 @@ import social.com.paper.utils.Variables;
  */
 public class MainActivity extends ActionBarActivity {
 
-    private DrawerLayout mDrawerPaperLayout;
-    private ListView lvDrawerPaperList;
+    @Bind(R.id.drawer_layout) DrawerLayout mDrawerPaperLayout;
+    @Bind(R.id.list_slidermenu)  ListView lvDrawerPaperList;
     private ActionBarDrawerToggle mDrawerPaperToggle;
 
     private BaseAdapter adapterPaper;
@@ -55,20 +55,19 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initControls();
+        ButterKnife.bind(this);
+
+        setupinitActionBar();
         initData();
         eventControls();
     }
 
-    private void initControls() {
+    private void setupinitActionBar() {
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setDisplayShowTitleEnabled(false);
         mActionBar.setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_LIST);
-
-        mDrawerPaperLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        lvDrawerPaperList = (ListView) findViewById(R.id.list_slidermenu);
     }
 
     private void initData() {
@@ -130,7 +129,7 @@ public class MainActivity extends ActionBarActivity {
             mActionBar.setSelectedNavigationItem(position);
             flagInitData = false;
 
-            Fragment fragment = new NewsFragment();
+            Fragment fragment = new NewsListFragment();
             Bundle bundle = new Bundle();
             bundle.putInt(Variables.KEY_CATEGORY, position);
             bundle.putSerializable(Variables.KEY_PAPER, mPaperCurrent);

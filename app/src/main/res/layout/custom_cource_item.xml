@@ -7,7 +7,7 @@
     android:orientation="horizontal">
 
     <CheckBox
-        android:id="@+id/cbUpdatePaper"
+        android:id="@+id/checkPaper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -17,7 +17,7 @@
         android:layout_marginRight="20dp" />
 
     <ImageView
-        android:id="@+id/ivUpdatePaper"
+        android:id="@+id/image"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentLeft="true"
@@ -31,12 +31,12 @@
         android:layout_marginTop="10dp" />
 
     <TextView
-        android:id="@+id/tvUpdatePaperName"
+        android:id="@+id/textName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/ivUpdatePaper"
-        android:layout_toRightOf="@+id/ivUpdatePaper"
+        android:layout_toEndOf="@+id/image"
+        android:layout_toRightOf="@+id/image"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000" />

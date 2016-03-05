@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import social.com.paper.R;
 import social.com.paper.adapter.SaveAdapter;
 import social.com.paper.database.DatabaseHandler;
@@ -33,44 +35,54 @@ public class SaveActivity extends ActionBarActivity implements SwipeRefreshLayou
     public static ArrayList<SaveNewsDto> newsList;
     public static ArrayList<SaveNewsDto> searchList;
 
-    ListView listView;
-    EditText editText;
-    ImageButton imageButton;
-
-    SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.lvSaved) ListView listView;
+    @Bind(R.id.edtSavedKey) EditText editText;
+    @Bind(R.id.ibSaveDelete) ImageButton imageButton;
+    @Bind(R.id.saved_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved);
+        ButterKnife.bind(this);
+
         setTitle("Tin đã lưu");
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
-        initControls();
-        initData();
-        initSwipeRefreshLayout();
-        eventControls();
-    }
-
-    private void initData() {
         DatabaseHandler db = new DatabaseHandler(getApplicationContext());
         newsList = db.getSaveNewsList();
         searchList = new ArrayList<>();
 
-        adapter = new SaveAdapter(getApplicationContext(), R.layout.custom_saved_item, newsList);
+        adapter = new SaveAdapter(getApplicationContext(), newsList);
         listView.setAdapter(adapter);
-    }
 
-    private void initControls() {
-        listView = (ListView) findViewById(R.id.lvSaved);
-        editText = (EditText) findViewById(R.id.edtSavedKey);
-        imageButton = (ImageButton) findViewById(R.id.ibSaveDelete);
-        imageButton.setVisibility(View.INVISIBLE);
+        eventControls();
     }
 
     private void eventControls() {
+        swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    swipeRefreshLayout.setEnabled(true);
+                else
+                    swipeRefreshLayout.setEnabled(false);
+            }
+        });
+
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,11 +106,11 @@ public class SaveActivity extends ActionBarActivity implements SwipeRefreshLayou
                         if (newsList.get(i).getNewsDto().getTitle().contains(value))
                             searchList.add(newsList.get(i));
                     }
-                    adapter = new SaveAdapter(getApplicationContext(), R.layout.custom_saved_item, searchList);
+                    adapter = new SaveAdapter(getApplicationContext(), searchList);
                     listView.setAdapter(adapter);
                 } else {
                     imageButton.setVisibility(View.INVISIBLE);
-                    adapter = new SaveAdapter(getApplicationContext(), R.layout.custom_saved_item, newsList);
+                    adapter = new SaveAdapter(getApplicationContext(), newsList);
                     listView.setAdapter(adapter);
                 }
             }
@@ -108,6 +120,7 @@ public class SaveActivity extends ActionBarActivity implements SwipeRefreshLayou
 
             }
         });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -135,10 +148,14 @@ public class SaveActivity extends ActionBarActivity implements SwipeRefreshLayou
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.menu_save_delete_all) {
-            deleteSaveAll();
-            editText.setText("");
+        switch (item.getItemId()) {
+            case R.id.menu_save_delete_all:
+                deleteSaveAll();
+                editText.setText("");
+                break;
+            case android.R.id.home:
+                finish();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -149,7 +166,7 @@ public class SaveActivity extends ActionBarActivity implements SwipeRefreshLayou
             if (db.countSaveNews() != 0) {
                 if (db.deleteAllSaveNews() == 1) {
                     newsList.clear();
-                    adapter = new SaveAdapter(getApplicationContext(), R.layout.custom_saved_item, newsList);
+                    adapter = new SaveAdapter(getApplicationContext(), newsList);
                     listView.setAdapter(adapter);
                     Toast.makeText(getApplicationContext(), R.string.toast_delete_all_news, Toast.LENGTH_SHORT).show();
                 } else
@@ -166,7 +183,7 @@ public class SaveActivity extends ActionBarActivity implements SwipeRefreshLayou
             }
             Toast.makeText(getApplicationContext(), "Đã xóa " + count + " tin", Toast.LENGTH_SHORT).show();
             searchList.clear();
-            adapter = new SaveAdapter(getApplicationContext(), R.layout.custom_saved_item, newsList);
+            adapter = new SaveAdapter(getApplicationContext(), newsList);
             listView.setAdapter(adapter);
         }
     }
@@ -176,7 +193,7 @@ public class SaveActivity extends ActionBarActivity implements SwipeRefreshLayou
         super.onResume();
         DatabaseHandler db = new DatabaseHandler(getApplicationContext());
         newsList = db.getSaveNewsList();
-        adapter = new SaveAdapter(getApplicationContext(), R.layout.custom_saved_item, newsList);
+        adapter = new SaveAdapter(getApplicationContext(), newsList);
         listView.setAdapter(adapter);
         editText.setText("");
     }
@@ -191,30 +208,6 @@ public class SaveActivity extends ActionBarActivity implements SwipeRefreshLayou
 
         if (swipeRefreshLayout.isRefreshing())
             swipeRefreshLayout.setRefreshing(false);
-    }
-
-    private void initSwipeRefreshLayout() {
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.saved_swipe_refresh_layout);
-        swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        swipeRefreshLayout.setOnRefreshListener(this);
-
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem == 0)
-                    swipeRefreshLayout.setEnabled(true);
-                else
-                    swipeRefreshLayout.setEnabled(false);
-            }
-        });
     }
 
     public static void deleteSaveNews(SaveNewsDto saveNewsDto, Context context) {
