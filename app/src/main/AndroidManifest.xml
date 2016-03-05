@@ -35,9 +35,6 @@
         <activity
             android:name="social.com.paper.activity.SaveActivity"
             android:screenOrientation="portrait"></activity>
-        <activity
-            android:name="social.com.paper.activity.AboutActivity"
-            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -37,7 +37,7 @@ public class SourcePaperActivity extends ActionBarActivity implements Serializab
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_source_papers);
+        setContentView(R.layout.source);
         ButterKnife.bind(this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -136,7 +136,7 @@ public class SourcePaperActivity extends ActionBarActivity implements Serializab
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_source_papers, menu);
+        getMenuInflater().inflate(R.menu.source, menu);
         this.menu = menu;
         if (choosePapers.size() == allPapers.size()) {
             menu.findItem(R.id.menu_action_add_all).setVisible(false);

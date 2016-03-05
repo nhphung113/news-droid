@@ -53,7 +53,7 @@ public class SourcePapersAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         } else {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.custom_cource_item, parent, false);
+            view = inflater.inflate(R.layout.source_item, parent, false);
             holder = new ViewHolder(view);
             view.setTag(holder);
         }

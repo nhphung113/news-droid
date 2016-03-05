@@ -40,7 +40,7 @@ public class NewsDetailsActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_details);
+        setContentView(R.layout.news_details);
 
         ButterKnife.bind(this);
 
@@ -81,7 +81,7 @@ public class NewsDetailsActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_details_news, menu);
+        getMenuInflater().inflate(R.menu.details, menu);
         return true;
     }
 

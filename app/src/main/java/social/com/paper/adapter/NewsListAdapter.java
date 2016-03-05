@@ -52,7 +52,7 @@ public class NewsListAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         } else {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.custom_news_item_layout, parent, false);
+            view = inflater.inflate(R.layout.news_item, parent, false);
             holder = new ViewHolder(view);
             view.setTag(holder);
         }

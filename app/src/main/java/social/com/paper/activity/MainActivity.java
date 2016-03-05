@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,8 +35,10 @@ import social.com.paper.utils.Variables;
  */
 public class MainActivity extends ActionBarActivity {
 
-    @Bind(R.id.drawer_layout) DrawerLayout mDrawerPaperLayout;
-    @Bind(R.id.list_slidermenu)  ListView lvDrawerPaperList;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout mDrawerPaperLayout;
+    @Bind(R.id.list_slidermenu)
+    ListView lvDrawerPaperList;
     private ActionBarDrawerToggle mDrawerPaperToggle;
 
     private BaseAdapter adapterPaper;
@@ -53,7 +56,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main);
         ButterKnife.bind(this);
 
         setupActionBar();
@@ -105,7 +108,7 @@ public class MainActivity extends ActionBarActivity {
         mCategoriesString = mPaperCurrent.getCategoriesString();
         mSpinnerAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, mCategoriesString);
         mActionBar.setListNavigationCallbacks(mSpinnerAdapter, new mOnNavigationListener());
-        
+
         flagInitData = true;
     }
 
@@ -176,7 +179,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -209,8 +212,11 @@ public class MainActivity extends ActionBarActivity {
             startActivity(i);
             return true;
         } else if (id == R.id.action_about) {
-            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-            startActivity(intent);
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            View dialogView = getLayoutInflater().inflate(R.layout.about, null);
+            dialogBuilder.setView(dialogView);
+            AlertDialog alertDialog = dialogBuilder.create();
+            alertDialog.show();
             return true;
         }
         return super.onOptionsItemSelected(item);
