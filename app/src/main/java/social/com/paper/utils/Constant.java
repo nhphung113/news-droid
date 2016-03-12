@@ -74,19 +74,6 @@ public class Constant {
             "http://vef.vn/category/kinh-te-24h/feed/", "http://vef.vn/category/bat-dong-san/feed/",
             "http://vef.vn/category/tai-chinh/feed/", "http://vef.vn/category/doanh-nhan/feed/", "http://vef.vn/category/kinh-doanh/feed/"
     };
-//    public static final String[] DOISONG_PHAPLUAT_CATEGORIES = {
-//            "Trang chủ", "Video", "Tin tức", "Pháp luật", "Đời sống", "Công nghệ", "Kinh doanh", "Giải trí",
-//            "Giáo dục", "Thể thao", "Ôtô - Xe máy", "Cần biết", "Từ thiện", "Địa phương", "Việt Nam xanh"
-//    };
-//    public static final String[] DOISONG_PHAPLUAT_LINKS = {
-//            "http://www.doisongphapluat.com/trang-chu.rss", "http://www.doisongphapluat.com/video.rss",
-//            "http://www.doisongphapluat.com/rss/tin-tuc.rss", "http://www.doisongphapluat.com/rss/phap-luat.rss",
-//            "http://www.doisongphapluat.com/rss/doi-song.rss", "http://www.doisongphapluat.com/rss/cong-nghe.rss",
-//            "http://www.doisongphapluat.com/rss/kinh-doanh.rss", "http://www.doisongphapluat.com/rss/giai-tri.rss",
-//            "http://www.doisongphapluat.com/rss/giao-duc.rss", "http://www.doisongphapluat.com/rss/the-thao.rss",
-//            "http://www.doisongphapluat.com/rss/oto-xemay.rss", "http://www.doisongphapluat.com/rss/can-biet.rss",
-//            "http://www.doisongphapluat.com/rss/tu-thien.rss", "http://www.doisongphapluat.com/rss/dia-phuong.rss", "http://www.doisongphapluat.com/rss/to-quoc-xanh.rss"
-//    };
 
     public static final String[] INFO_NET_CATEGORIES = {
             "Trang chủ", "Thời sự", "Đời sống", "Kinh doanh", "Thế giới", "Sức khỏe",
@@ -187,20 +174,6 @@ public class Constant {
             "http://phapluattp.vn/rss/an-ninh-trat-tu-23.rss",
             "http://phapluattp.vn/rss/xe-37.rss", "http://phapluattp.vn/rss/phong-su-35.rss", "http://phapluattp.vn/rss/ban-doc-24.rss"
     };
-    public static final String[] SUCKHOE_DOISONG_CATEGORIES = {
-            "Trang chủ", "Bạn cần biết về y học", "Diễn đàn", "Tư vấn truyền hình trực tuyến", "Thời sự",
-            "Mẹ và bé", "Dược sĩ tư vấn", "Y học cổ truyền", "Tình yêu và giới tính",
-            "Văn hóa - Thể thao", "Làm đẹp", "Quốc tế", "Bác sĩ trả lời", "Phòng mạch Online"
-    };
-    public static final String[] SUCKHOE_DOISONG_NEWS_LINKS = {
-            "http://suckhoedoisong.vn/rss/home", "http://suckhoedoisong.vn/rss/ban-can-biet-ve-y-hoc",
-            "http://suckhoedoisong.vn/rss/dien-dan", "http://suckhoedoisong.vn/rss/tu-van-truyen-hinh-truc-tuyen",
-            "http://suckhoedoisong.vn/rss/thoi-su", "http://suckhoedoisong.vn/rss/me-va-be",
-            "http://suckhoedoisong.vn/rss/duoc-si-tu-van", "http://suckhoedoisong.vn/rss/y-hoc-co-truyen",
-            "http://suckhoedoisong.vn/rss/tinh-yeu-va-gioi-tinh", "http://suckhoedoisong.vn/rss/van-hoa-the-thao",
-            "http://suckhoedoisong.vn/rss/lam-dep", "http://suckhoedoisong.vn/rss/quoc-te",
-            "http://suckhoedoisong.vn/rss/bac-si-tra-loi", "http://suckhoedoisong.vn/rss/phong-mach-online"
-    };
 
     public static final String[] VTV_CATEGORIES = {
             "Chính trị", "Xã hội", "Pháp luật", "Thế giới", "Kinh tế", "Truyền hình", "Phim VTV",
@@ -299,31 +272,12 @@ public class Constant {
             "http://www.eva.vn/rss/rss.php", "http://www.eva.vn/rss/rss.php/36", "http://www.eva.vn/rss/rss.php/58", "http://www.eva.vn/rss/rss.php/20", "http://www.eva.vn/rss/rss.php/66", "http://www.eva.vn/rss/rss.php/85", "http://www.eva.vn/rss/rss.php/10", "http://www.eva.vn/rss/rss.php/169",
             "http://www.eva.vn/rss/rss.php/162", "http://www.eva.vn/rss/rss.php/2", "http://www.eva.vn/rss/rss.php/40", "http://www.eva.vn/rss/rss.php/3", "http://www.eva.vn/rss/rss.php/173", "http://www.eva.vn/rss/rss.php/186", "http://www.eva.vn/rss/rss.php/157"
     };
-    //    public static final String[] NGUOI_DUA_TIN_CATEGORIES = {
-//            "Trang chủ", "Thời sự", "Đa chiều", "Thế giới", "Kinh doanh", "Pháp luật", "Đời sống", "Cộng đồng mạng", "Giải trí", "Thể thao", "Cấn biết", "Chuyên đề", "Tuyển dụng"
-//    };
-//    public static final String[] NGUOI_DUA_TIN_LINKS = {
-//            "http://www.nguoiduatin.vn/trang-chu.rss", "http://www.nguoiduatin.vn/rss/thoi-su.rss", "http://www.nguoiduatin.vn/rss/da-chieu.rss", "http://www.nguoiduatin.vn/rss/the-gioi.rss",
-//            "http://www.nguoiduatin.vn/rss/kinh-doanh.rss", "http://www.nguoiduatin.vn/rss/phap-luat.rss", "http://www.nguoiduatin.vn/rss/doi-song.rss", "http://www.nguoiduatin.vn/rss/mang-xa-hoi.rss",
-//            "http://www.nguoiduatin.vn/rss/giai-tri.rss", "http://www.nguoiduatin.vn/rss/the-thao.rss", "http://www.nguoiduatin.vn/rss/can-biet.rss", "http://www.nguoiduatin.vn/rss/chuyen-de.rss", "http://www.nguoiduatin.vn/rss/tuyen-dung-ndt.rss"
-//    };
     public static final String[] TINH_TE_CATEGORIES = {
             "Trang chủ"
     };
     public static final String[] TINH_TE_LINKS = {
             "https://www.tinhte.vn/rss"
     };
-//    public static final String[] FORTY_HOURS_CATEGORIES = {
-//            "Tin mới nhất", "Bóng đá", "An ninh - Hình sự", "Thời trang", "Hi-tech", "Tài chính – Bất động sản", "Ẩm thực", "Làm đẹp", "Phim", "Giáo dục - Du học", "Bạn trẻ - Cuộc sống", "Ca nhạc - MTV", "Thể thao", "Phi thường - kỳ quặc", "Công nghệ thông tin", "Ô tô - Xe máy", "Thị trường - Tiêu dùng", "Du lịch", "Sức khỏe", "Cười 24h"
-//    };
-
-//    public static final String[] FORTY_HOURS_LINKS = {
-//            "http://www.24h.com.vn/upload/rss/tintuctrongngay.rss", "http://www.24h.com.vn/upload/rss/bongda.rss", "http://www.24h.com.vn/upload/rss/anninhhinhsu.rss", "http://www.24h.com.vn/upload/rss/thoitrang.rss",
-//            "http://www.24h.com.vn/upload/rss/thoitranghitech.rss", "http://www.24h.com.vn/upload/rss/taichinhbatdongsan.rss", "http://www.24h.com.vn/upload/rss/amthuc.rss", "http://www.24h.com.vn/upload/rss/lamdep.rss",
-//            "http://www.24h.com.vn/upload/rss/phim.rss", "http://www.24h.com.vn/upload/rss/giaoducduhoc.rss", "http://www.24h.com.vn/upload/rss/bantrecuocsong.rss", "http://www.24h.com.vn/upload/rss/canhacmtv.rss",
-//            "http://www.24h.com.vn/upload/rss/thethao.rss", "http://www.24h.com.vn/upload/rss/phithuongkyquac.rss", "http://www.24h.com.vn/upload/rss/congnghethongtin.rss", "http://www.24h.com.vn/upload/rss/otoxemay.rss",
-//            "http://www.24h.com.vn/upload/rss/thitruongtieudung.rss", "http://www.24h.com.vn/upload/rss/dulich.rss", "http://www.24h.com.vn/upload/rss/suckhoedoisong.rss", "http://www.24h.com.vn/upload/rss/cuoi24h.rss",
-//    };
 
     public static final String[] DAN_TRI_CATEGORIES = {
             "Trang chủ", "Sức khỏa", "Xã hội", "Giải trí", "Giáo dục", "Thể thao", "Thế giới", "Kinh doanh", "Ô tô - xe máy", "Sức mạnh số", "Tình yêu", "Chuyện lạ", "Việc làm", "Nhịp sống trẻ", "Tấm lòng nhân ái", "Pháp luật", "Bạn đọc", "Diễn đàn", "Tuyển sinh", "Blog", "Văn hóa", "Du học", "Du lịch", "Đời sống"
@@ -334,12 +288,6 @@ public class Constant {
             "http://dantri.com.vn/tinh-yeu-gioi-tinh.rss", "http://dantri.com.vn/chuyen-la.rss", "http://dantri.com.vn/viec-lam.rss", "http://dantri.com.vn/nhip-song-tre.rss", "http://dantri.com.vn/tam-long-nhan-ai.rss", "http://dantri.com.vn/phap-luat.rss",
             "http://dantri.com.vn/ban-doc.rss", "http://dantri.com.vn/dien-dan.rss", "http://dantri.com.vn/tuyen-sinh.rss", "http://dantri.com.vn/blog.rss", "http://dantri.com.vn/van-hoa.rss", "http://dantri.com.vn/du-hoc.rss", "http://dantri.com.vn/du-lich.rss", "http://dantri.com.vn/doi-song.rss"
     };
-//    public static final String[] CAFE_LAND_CATEGORIES = {
-//            "Thị trường", "Kiến thức", "Dự án", "Sự kiện", "Phân tích", "Xu hướng"
-//    };
-//    public static final String[] CAFE_LAND_LINKS = {
-//            "http://cafeland.vn/tin-tuc.rss", "http://cafeland.vn/kien-thuc.rss", "http://cafeland.vn/du-an.rss", "http://cafeland.vn/su-kien.rss", "http://cafeland.vn/phan-tich.rss", "http://cafeland.vn/xu-huong.rss"
-//    };
 
     public static final String[] CAFEF_CATEGORIES = {
             "Trang chủ", "Thời sự", "Chứng khoán", "Bất động sản", "Doanh nghiệp", "Ngân hàng", "Tài chính", "Kinh tế vĩ mô", "Hàng hóa"
@@ -383,13 +331,10 @@ public class Constant {
 
     public static final String KEY_CATEGORY_POSITION = "CATEGORY_POSITION";
 
-    //public static final HashMap<Integer, ArrayList<RssItem>> newsMap = new HashMap<Integer, ArrayList<RssItem>>();
-
-
     public static final String[][] CATEGORIES = {
             VNEXPRESS_CATEGORIES, VNECONOMY_CATEGORIES, CAFE_BIZ_CATEGORIES, CAFEF_CATEGORIES, DAN_TRI_CATEGORIES, TINH_TE_CATEGORIES, EVA_CATEGORIES,
             BONG_DA_CATEGORIES, BONG_DA_PLUS_CATEGORIES, VNNET_CATEGORIES, THANH_NIEN_CATEGORIES, TIEN_PHONG_CATEGORIES, AFAMILY_CATEGORIES, ICT_NEWS_CATEGORIES, GAMEK_CATEGORIES,
-            VTV_CATEGORIES, SUCKHOE_DOISONG_CATEGORIES, PHAP_LUAT_HCM_CATEGORIES, BAO_DAU_TU_CATEGORIES, THETHAO_247_CATEGORIES,
+            VTV_CATEGORIES, PHAP_LUAT_HCM_CATEGORIES, BAO_DAU_TU_CATEGORIES, THETHAO_247_CATEGORIES,
             LAO_DONG_CATEGORIES, VIET_STOCK_CATEGORIES, KENH14_CATEGORIES, INFO_NET_CATEGORIES,
             VEF_CATEGORIES, GIADINH_NETVN_CATEGORIES, VOV_CATEGORIES, AUTO_PRO_CATEGORIES, TIIN_VN_CATEGORIES
     };
@@ -397,7 +342,7 @@ public class Constant {
     public static final String[][] LINKS = {
             VNEXPRESS_LINKS, VNECONOMY_LINKS, CAFE_BIZ_LINKS, CAFEF_LINKS, DAN_TRI_LINKS, TINH_TE_LINKS, EVA_LINKS,
             BONG_DA_LINKS, BONG_DA_PLUS_LINKS, VNNET_LINKS, THANH_NIEN_LINKS, TIEN_PHONG_LINKS, AFAMILY_LINKS, ICT_NEWS_LINKS, GAMEK_NEWS_LINKS,
-            VTV_NEWS_LINKS, SUCKHOE_DOISONG_NEWS_LINKS, PHAP_LUAT_HCM_NEWS_LINKS, BAO_DAU_TU_LINKS, THETHAO_247_LINKS,
+            VTV_NEWS_LINKS, PHAP_LUAT_HCM_NEWS_LINKS, BAO_DAU_TU_LINKS, THETHAO_247_LINKS,
             LAO_DONG_LINKS, VIET_STOCK_LINKS, KENH14_LINKS, INFO_NET_LINKS,
             VEF_LINKS, GIADINH_NETVN_LINKS, VOV_LINKS, AUTO_PRO_LINKS, TIIN_VN_LINKS
     };
@@ -405,7 +350,7 @@ public class Constant {
     public static final String[] PAPERS = {
             "VnExpress", "VnEconomy", "CafeBiz", "CafeF", "Dân Trí", "Tinh Tế", "Eva", "Bóng Đá",
             "Bóng Đá Plus", "Vietnamnet", "Thanh Niên", "Tiền Phong", "AFamily", "ICT News", "GameK",
-            "VTV", "Sức Khỏe và Đời Sống", "Pháp Luật TP.HCM", "Báo Đầu Tư", "Thể Thao 24/7",
+            "VTV", "Pháp Luật TP.HCM", "Báo Đầu Tư", "Thể Thao 24/7",
             "Lao Động", "VietStock", "Kênh 14", "InfoNet", "VEF", "Gia Đình Net", "VOV News",
             "AutoPro", "Tiin.vn"
     };
@@ -444,9 +389,7 @@ public class Constant {
             "EEEE, dd MMM yyyy HH:mm:ss", // VnEconomy
             "M/dd/yyyy hh:mm:ss a", // CafeBiz
             "M/dd/yyyy hh:mm:ss a",// CafeF
-//            "EEEE, dd MMM yyyy HH:mm:ss", // CafeLand
             "EEEE, dd MMM yyyy HH:mm:ss",// Dân Trí
-//            "yyyy-MM-dd hh:mm:ss", // 24h
             "EEEE, dd MMM yyyy HH:mm:ss",// Tinh Tế
             "yyyy-MM-dd hh:mm:ss", // eva
             "EEEE, dd MMM yyyy HH:mm:ss",// Bóng đá
@@ -458,7 +401,6 @@ public class Constant {
             "EEEE, dd MMM yyyy HH:mm:ss", // ICT News
             "M/dd/yyyy hh:mm:ss", // gameK
             "EEEE, dd MMM yyyy HH:mm:ss", // vtv
-            "M/dd/yyyy hh:mm:ss", // Suc khoe va doi song
             "EEEE, dd MMM yyyy HH:mm:ss", // phap luat hcm
             "EEEE, dd MMM yyyy HH:mm:ss", // bao dau tu
             "EEEE, dd MMM yyyy HH:mm:ss", // the thao 247
@@ -466,7 +408,6 @@ public class Constant {
             "EEEE, dd MMM yyyy HH:mm:ss", // viet stock
             "M/dd/yyyy hh:mm:ss", // kenh 14
             "M/dd/yyyy hh:mm:ss", // infonet
-//            "yyyy-MM-dd hh:mm:ss", // doi song va phap luat
             "EEEE, dd MMM yyyy HH:mm:ss", // vef
             "M/dd/yyyy hh:mm:ss", // gia dinh.net.vn
             "EEEE, dd MMM yyyy HH:mm:ss", // VOV
@@ -477,11 +418,8 @@ public class Constant {
     public static final String PAPER_CONTENT_KEY_DELETE = "delete";
     public static final String PAPER_CONTENT_TAG_KEY_DELETE = "deltag";
     public static final String PAPER_CONTENT_KEY_GET = "class_";
-    public static final String PAPER_CONTENT_KEY_GET_COMMENT = "common";
 
     public static final String[] TIIN_VN_CONTENT_KEY = {
-//            PAPER_CONTENT_KEY_DELETE + "[style=width:600px; float:left]",
-
             PAPER_CONTENT_KEY_GET + "#body-content"
     };
 
@@ -534,10 +472,7 @@ public class Constant {
 
             PAPER_CONTENT_KEY_GET + "#content"
     };
-    //    public static final String[] DOISONG_PHAPLUAT_CONTENT_KEY = {
-//            PAPER_CONTENT_KEY_DELETE + ".breakcrumb",
-//            PAPER_CONTENT_KEY_GET + ".detail"
-//    };
+
     public static final String[] INFO_NET_CONTENT_KEY = {
             PAPER_CONTENT_KEY_DELETE + ".related",
             PAPER_CONTENT_KEY_DELETE + ".popular",
@@ -612,8 +547,7 @@ public class Constant {
 
             PAPER_CONTENT_KEY_GET + ".main-contents"
     };
-    public static final String[] SUCKHOE_DOISONG_CONTENT_KEY = {
-    };
+
     public static final String[] VTV_CONTENT_KEY = {
             PAPER_CONTENT_KEY_DELETE + ".news-info", PAPER_CONTENT_KEY_DELETE + ".tag",
             PAPER_CONTENT_KEY_DELETE + ".detail_comment", PAPER_CONTENT_KEY_DELETE + ".bottom-related-news",
@@ -727,37 +661,10 @@ public class Constant {
 
             PAPER_CONTENT_KEY_GET + ".content"
     };
-    //    public static final String[] NGUOI_DUA_TIN_CONTENT_KEY = {};
+
     public static final String[] TINH_TE_CONTENT_KEY = {
             PAPER_CONTENT_KEY_GET + ".mainContent"
     };
-//    public static final String[] FORTY_HOURS_CONTENT_KEY = {
-//            PAPER_CONTENT_KEY_DELETE + ".ttcb-box",
-//            PAPER_CONTENT_KEY_DELETE + ".ttcb-box",
-//            PAPER_CONTENT_KEY_DELETE + ".fb-like",
-//            PAPER_CONTENT_KEY_DELETE + ".fb-share-button",
-//            PAPER_CONTENT_KEY_DELETE + ".noi-dung-thong-diep-mxh-trang-bai-viet",
-//            PAPER_CONTENT_KEY_DELETE + ".fb-like",
-//            PAPER_CONTENT_KEY_DELETE + ".boxGreen-bg",
-//            PAPER_CONTENT_KEY_DELETE + ".baiviet-tags",
-//            PAPER_CONTENT_KEY_DELETE + ".greenBox-t.greenBox-big2",
-//            PAPER_CONTENT_KEY_DELETE + ".video-chonloc",
-//            PAPER_CONTENT_KEY_DELETE + ".boxGreen-bg",
-//
-//            PAPER_CONTENT_KEY_DELETE + ".boxTrungTam",
-//            PAPER_CONTENT_KEY_DELETE + ".boxGreen-video",
-//            PAPER_CONTENT_KEY_DELETE + ".boxGrey-2",
-//            PAPER_CONTENT_KEY_DELETE + ".boxGrey-2",
-//            PAPER_CONTENT_KEY_DELETE + ".boxTrungTam",
-//            PAPER_CONTENT_KEY_DELETE + "#leftMenu",
-//            PAPER_CONTENT_KEY_DELETE + ".boxGreen-t",
-//            PAPER_CONTENT_KEY_DELETE + ".banner-300250",
-//            PAPER_CONTENT_KEY_DELETE + ".newsDate",
-//            PAPER_CONTENT_KEY_DELETE + ".linkMore-news-sub",
-//            PAPER_CONTENT_KEY_DELETE + ".boxGrey-2",
-//
-//            PAPER_CONTENT_KEY_GET + ".content"
-//    };
 
     public static final String[] DAN_TRI_CONTENT_KEY = {
             PAPER_CONTENT_KEY_DELETE + ".news-tag", PAPER_CONTENT_KEY_DELETE + ".box26",
@@ -765,15 +672,6 @@ public class Constant {
 
             PAPER_CONTENT_KEY_GET + "#ctl00_IDContent_Tin_Chi_Tiet"
     };
-//    public static final String[] CAFE_LAND_CONTENT_KEY = {
-//            PAPER_CONTENT_KEY_DELETE + ".crum.clearfix",
-//            PAPER_CONTENT_KEY_DELETE + ".resize-font",
-//            PAPER_CONTENT_KEY_DELETE + ".bar-detail.stick",
-//            PAPER_CONTENT_KEY_DELETE + "#footer-stick",
-//            PAPER_CONTENT_KEY_DELETE + "select",
-//            PAPER_CONTENT_KEY_DELETE + "select",
-//            PAPER_CONTENT_KEY_GET + ".detail-page.clearfix"
-//    };
 
     public static final String[] CAFEF_CONTENT_KEY = {
             PAPER_CONTENT_KEY_DELETE + ".top_detail", PAPER_CONTENT_KEY_DELETE + ".fbrecommend",
@@ -821,7 +719,7 @@ public class Constant {
             DAN_TRI_CONTENT_KEY, TINH_TE_CONTENT_KEY, EVA_CONTENT_KEY, BONG_DA_CONTENT_KEY,
             BONG_DA_PLUS_CONTENT_KEY, VIETNAM_NET_CONTENT_KEY, THANH_NIEN_CONTENT_KEY, TIEN_PHONG_CONTENT_KEY,
             AFAMILY_CONTENT_KEY, ICT_NEWS_CONTENT_KEY, GAMEK_CONTENT_KEY, VTV_CONTENT_KEY,
-            SUCKHOE_DOISONG_CONTENT_KEY, PHAP_LUAT_HCM_CONTENT_KEY, BAO_DAU_TU_CONTENT_KEY, THE_THAO_247_CONTENT_KEY,
+            PHAP_LUAT_HCM_CONTENT_KEY, BAO_DAU_TU_CONTENT_KEY, THE_THAO_247_CONTENT_KEY,
             LAO_DONG_CONTENT_KEY, VIET_STOCK_CONTENT_KEY, KENH_14_CONTENT_KEY, INFO_NET_CONTENT_KEY,
             VEF_CONTENT_KEY, GIA_DINH_NET_VN_CONTENT_KEY, VOV_CONTENT_KEY, AUTO_PRO_CONTENT_KEY, TIIN_VN_CONTENT_KEY
     };
