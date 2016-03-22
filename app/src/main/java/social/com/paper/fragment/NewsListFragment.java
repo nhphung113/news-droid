@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import social.com.paper.R;
 import social.com.paper.activity.DetailsActivity;
+import social.com.paper.activity.MainActivity;
 import social.com.paper.adapter.NewsAdapter;
 import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.NewsDto;
@@ -33,8 +35,6 @@ import social.com.paper.model.NewsItem;
 import social.com.paper.utils.Constant;
 import social.com.paper.utils.HelpUtils;
 import social.com.paper.utils.RssParser;
-
-import android.support.v4.app.Fragment;
 
 /**
  * Created by phung nguyen on 7/22/2015.
@@ -254,19 +254,19 @@ public class NewsListFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<NewsDto> list) {
-            super.onPostExecute(list);
+        protected void onPostExecute(ArrayList<NewsDto> result) {
+            super.onPostExecute(result);
             try {
-                if (list.size() == 0) {
+                newsItemLst.clear();
+                MainActivity.newsCurrentLst = result;
+                if (result.size() == 0) {
                     Toast.makeText(getActivity(), R.string.toast_dont_news, Toast.LENGTH_SHORT).show();
-                    newsItemLst = new ArrayList<>();
                     mAdapter.notifyDataSetChanged();
                 } else {
-                    newsDtoLst = list;
-                    newsItemLst = new ArrayList<>();
-                    PAGE_NUMBER = list.size() / Constant.NUMBERS_NEWS_ON_LIST;
-                    for (int i = 0; i < list.size() / PAGE_NUMBER; i++) {
-                        NewsDto newsDto = list.get(i);
+                    newsDtoLst = result;
+                    PAGE_NUMBER = result.size() / Constant.NUMBERS_NEWS_ON_LIST;
+                    for (int i = 0; i < result.size() / PAGE_NUMBER; i++) {
+                        NewsDto newsDto = result.get(i);
                         NewsItem item = new NewsItem();
                         item.setTitle(newsDto.getTitle());
                         item.setShortNews(newsDto.getShortNews());

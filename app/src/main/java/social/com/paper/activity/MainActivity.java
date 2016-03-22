@@ -1,10 +1,17 @@
 package social.com.paper.activity;
 
+import android.app.NotificationManager;
+import android.graphics.BitmapFactory;
+import android.support.v4.app.NotificationCompat.Builder;
+
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.support.v4.widget.DrawerLayout;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,13 +25,19 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import social.com.paper.R;
 import social.com.paper.adapter.PaperAdapter;
 import social.com.paper.database.DatabaseHandler;
+import social.com.paper.dto.NewsDto;
 import social.com.paper.dto.PaperDto;
 import social.com.paper.dto.VariableDto;
 import social.com.paper.fragment.NewsListFragment;
@@ -39,19 +52,21 @@ public class MainActivity extends ActionBarActivity {
     DrawerLayout mDrawerPaperLayout;
     @Bind(R.id.list_slidermenu)
     ListView lvDrawerPaperList;
-    private ActionBarDrawerToggle mDrawerPaperToggle;
 
     private BaseAdapter adapterPaper;
-    private int mPositionPaperCurrent;
     private ArrayAdapter<String> mSpinnerAdapter;
-    public String[] mCategoriesString;
+    private String[] mCategoriesString;
 
     private ArrayList<PaperDto> mPaperList = new ArrayList<>();
     private PaperDto mPaperCurrent;
+    private int mPositionPaperCurrent;
 
     private boolean flagInitData = false;
 
+    private ActionBarDrawerToggle mDrawerPaperToggle;
     private ActionBar mActionBar;
+
+    public static ArrayList<NewsDto> newsCurrentLst = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,37 +204,169 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         int id = item.getItemId();
-        if (id == R.id.action_add_papers) {
-            Intent intent = new Intent(MainActivity.this, SourceActivity.class);
-            startActivity(intent);
-            return true;
-        } else if (id == R.id.action_saved_news) {
-            Intent intent = new Intent(MainActivity.this, SaveActivity.class);
-            startActivity(intent);
-            return true;
-        } else if (id == R.id.action_share) {
-            Intent share = new Intent(android.content.Intent.ACTION_SEND);
-            share.setType("text/plain");
-            share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            share.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.app_name));
-            share.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.application_play_store));
-            startActivity(Intent.createChooser(share, getResources().getString(R.string.action_share_news)));
-            return true;
-        } else if (id == R.id.action_rating) {
-            String url = getResources().getString(R.string.application_play_store);
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-            return true;
-        } else if (id == R.id.action_about) {
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-            View dialogView = getLayoutInflater().inflate(R.layout.about, null);
-            dialogBuilder.setView(dialogView);
-            AlertDialog alertDialog = dialogBuilder.create();
-            alertDialog.show();
-            return true;
+        switch (id) {
+            case R.id.action_save_newss:
+                saveNews();
+                break;
+            case R.id.action_add_papers:
+                startActivity(new Intent(MainActivity.this, SourceActivity.class));
+                break;
+            case R.id.action_saved_news:
+                startActivity(new Intent(MainActivity.this, SaveActivity.class));
+                break;
+            case R.id.action_share:
+                Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                share.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.app_name));
+                share.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.application_play_store));
+                startActivity(Intent.createChooser(share, getResources().getString(R.string.action_share_news)));
+                break;
+            case R.id.action_rating:
+                String url = getResources().getString(R.string.application_play_store);
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+                break;
+            case R.id.action_about:
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                View dialogView = getLayoutInflater().inflate(R.layout.about, null);
+                dialogBuilder.setView(dialogView);
+                AlertDialog alertDialog = dialogBuilder.create();
+                alertDialog.show();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveNews() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setMessage("Tải xuống tất cả tin hiện tại.");
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "Đăng tải...", Toast.LENGTH_SHORT).show();
+                new DownloadNewsAsyncTask(newsCurrentLst, new Date().getHours() + new Date().getMinutes() + new Date().getSeconds()).execute();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public class DownloadNewsAsyncTask extends AsyncTask<Void, Integer, Integer> {
+
+        private int id;
+        private NotificationManager mNotifyManager;
+        private Builder mBuilder;
+        private ArrayList<NewsDto> data;
+
+        public DownloadNewsAsyncTask(ArrayList<NewsDto> data, int id) {
+            this.id = id;
+            this.data = data;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mBuilder = new Builder(MainActivity.this);
+            mBuilder.setContentTitle("NewsDroid").setContentText("Đang tải...");
+            // Displays the progress bar for the first time.
+            mBuilder.setProgress(100, 0, false);
+            mBuilder.setAutoCancel(true);
+            mBuilder.setSmallIcon(R.drawable.ic_file_download);
+            mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_app));
+            mNotifyManager.notify(id, mBuilder.build());
+        }
+
+        public String getContent(Document document) {
+            String html = "";
+            String[] contentKeys = Constant.PAPER_CONTENT_KEY[Constant.getPositionPaper(mPaperCurrent.getName())];
+            for (int i = 0; i < contentKeys.length; i++) {
+                if (html.equalsIgnoreCase("")) {
+                    String isClass = contentKeys[i].substring(0, Constant.PAPER_CONTENT_KEY_GET.length());
+                    String content_key = contentKeys[i].substring(Constant.PAPER_CONTENT_KEY_GET.length());
+                    try {
+                        if (isClass.equalsIgnoreCase(Constant.PAPER_CONTENT_KEY_DELETE))
+                            document.select(content_key).first().remove();
+                        else if (isClass.equalsIgnoreCase(Constant.PAPER_CONTENT_TAG_KEY_DELETE))
+                            document.getElementsByTag(content_key).first().remove();
+                        else
+                            html += document.select(content_key).first().html();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            // special ccase.
+            html = html.replace("<img alt=\"\" src=\"http://imgs.vietnamnet.vn/logo.gif\" class=\"logo-small\">- ", "");
+            html = html.replace("//images.tienphong.vn", "http://images.tienphong.vn");
+            return html;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            int count = 0;
+            for (int i = 0; i < data.size(); i++) {
+                NewsDto newsDto = data.get(i);
+                try {
+                    String content = "";
+                    DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                    if (!db.existsSaveNews(newsDto)) {
+                        count++;
+                        Document document = Jsoup.connect(newsDto.getLink()).get();
+                        if (newsDto.getLink().contains("tinhte.vn")) {
+                            content = document.html();
+                        } else {
+                            content = getContent(document);
+                            content = content.replace("href", "hrefs");
+                            content = "<html><head><style type='text/css'>body{text-align:justify;} img{width:100%25;} h1{text-align:left;} h2{text-align:left;} </style></head>"
+                                    + "<body>" + content + "</body></html>";
+                        }
+                        newsDto.setContentHtml(content);
+                        if (db.insertSaveNews(newsDto) != 0) {
+                            int percent = (i + 1) * 100 / data.size();
+                            publishProgress(percent);
+                        }
+                    }
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return count;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            // Update progress
+            mBuilder.setProgress(100, values[0], false);
+            mNotifyManager.notify(id, mBuilder.build());
+        }
+
+        @Override
+        protected void onPostExecute(Integer s) {
+            super.onPostExecute(s);
+            mBuilder.setContentText("Download hoàn tất");
+            // Removes the progress bar
+            mBuilder.setProgress(0, 0, false);
+            mNotifyManager.notify(id, mBuilder.build());
+
+            if (s == 0) {
+                Toast.makeText(MainActivity.this, "Bạn đã download danh sách tin này.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this, "Download hoàn tất (" + s + " tin)", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override

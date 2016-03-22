@@ -75,7 +75,7 @@ public class SaveAdapter extends BaseAdapter {
 
         String link = news.getLink().length() > 40 ? news.getLink().substring(0, 40) + "..." : news.getLink() + "...";
 
-        Glide.with(context).load(link)
+        Glide.with(context).load(news.getImageLink())
                 .fitCenter().placeholder(R.drawable.ic_photos)
                 .crossFade().into(holder.image);
 
