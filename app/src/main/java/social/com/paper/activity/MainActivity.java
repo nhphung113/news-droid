@@ -1,7 +1,12 @@
 package social.com.paper.activity;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat.Builder;
 
 import android.content.Context;
@@ -278,11 +283,12 @@ public class MainActivity extends ActionBarActivity {
             mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mBuilder = new Builder(MainActivity.this);
             mBuilder.setContentTitle("NewsDroid").setContentText("Đang tải...");
-            // Displays the progress bar for the first time.
             mBuilder.setProgress(100, 0, false);
             mBuilder.setAutoCancel(true);
             mBuilder.setSmallIcon(R.drawable.ic_file_download);
-            mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_app));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_app));
+            }
             mNotifyManager.notify(id, mBuilder.build());
         }
 
@@ -359,6 +365,10 @@ public class MainActivity extends ActionBarActivity {
             mBuilder.setContentText("Download hoàn tất");
             // Removes the progress bar
             mBuilder.setProgress(0, 0, false);
+            mBuilder.setLights(Color.BLUE, 1000, 1000);
+            mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+            mBuilder.setContentIntent(PendingIntent.getActivity(getApplicationContext(), 0,
+                    new Intent(getApplicationContext(), SaveActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
             mNotifyManager.notify(id, mBuilder.build());
 
             if (s == 0) {
