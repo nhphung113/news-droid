@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/layout_paper_item_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginRight="12dp"
         android:src="@drawable/ic_news_cafebiz" />
@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="CafeBiz"
+        android:fontFamily="sans-serif-light"
         android:textColor="@android:color/black" />
 
 </LinearLayout>

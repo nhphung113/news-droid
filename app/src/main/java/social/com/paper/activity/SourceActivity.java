@@ -1,7 +1,8 @@
 package social.com.paper.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,10 +25,11 @@ import social.com.paper.dto.PaperDto;
 /**
  * Created by phung nguyen on 7/29/2015.
  */
-public class SourceActivity extends ActionBarActivity implements Serializable {
+public class SourceActivity extends AppCompatActivity implements Serializable {
     Menu menu;
     @Bind(R.id.listView) ListView listView;
-
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     SourceAdapter adapter;
 
     public static ArrayList<PaperDto> allPapers = new ArrayList<>();
@@ -39,7 +41,7 @@ public class SourceActivity extends ActionBarActivity implements Serializable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_source);
         ButterKnife.bind(this);
-
+        setSupportActionBar(toolbar);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -65,8 +67,7 @@ public class SourceActivity extends ActionBarActivity implements Serializable {
             }
         });
 
-        setTitle(R.string.action_add_papers);
-
+        getSupportActionBar().setTitle(R.string.action_add_papers);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);

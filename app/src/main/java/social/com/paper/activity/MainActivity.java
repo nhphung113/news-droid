@@ -11,9 +11,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,6 +29,8 @@ import social.com.paper.adapter.PaperAdapter;
 import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.NewsDto;
 import social.com.paper.dto.PaperDto;
+import social.com.paper.dto.VariableDto;
+import social.com.paper.fragment.NewsListFragment;
 import social.com.paper.utils.Constant;
 
 /**
@@ -36,10 +40,14 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     //@Bind(R.id.drawer_layout) DrawerLayout mDrawerPaperLayout;
-    @Bind(R.id.listView) ListView listViewPaper;
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.nav_view) NavigationView navigationView;
-    @Bind(R.id.drawer_layout) DrawerLayout drawer;
+    @Bind(R.id.listView)
+    ListView listViewPaper;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.nav_view)
+    NavigationView navigationView;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout drawer;
 
     private PaperAdapter adapterPaper;
     private CategoriesAdapter categoriesAdapter;
@@ -66,7 +74,38 @@ public class MainActivity extends AppCompatActivity
 
         initLayout();
         setupData();
+        initEvents();
 //        eventControls();
+    }
+
+    private void initEvents() {
+        listViewPaper.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                }
+                DatabaseHandler db = new DatabaseHandler(MainActivity.this);
+                String posCate = db.getVariableByName(Constant.KEY_CATEGORY_POSITION);
+                if (TextUtils.isEmpty(posCate))
+                    db.insertVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
+                else if (flagInitData) {
+                    int pos = Integer.parseInt(posCate);
+                    if (pos <= mPaperCurrent.getCategories().size()) {
+                        position = pos;
+                        db.updateVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
+                    }
+                } else {
+                    db.updateVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
+                }
+
+                //mActionBar.setSelectedNavigationItem(position);
+                flagInitData = false;
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                        NewsListFragment.newInstance(position, mPaperCurrent)).commit();
+            }
+        });
     }
 
     private void initLayout() {
@@ -79,7 +118,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -100,20 +138,20 @@ public class MainActivity extends AppCompatActivity
             db1.initializeData();
         }
 
-//        ArrayList<PaperDto> mPaperList = db.getPapersActive();
-//        for (int i = 0; i < mPaperList.size(); i++) {
-//            if (mPaperList.get(i).getChoose() == 1) {
-//                mPaperCurrent = mPaperList.get(i);
-//                mPositionPaperCurrent = i;
-//                break;
-//            }
-//        }
+        ArrayList<PaperDto> mPaperList = db.getPapersActive();
+        for (int i = 0; i < mPaperList.size(); i++) {
+            if (mPaperList.get(i).getChoose() == 1) {
+                mPaperCurrent = mPaperList.get(i);
+                mPositionPaperCurrent = i;
+                break;
+            }
+        }
 
-//        if (mPositionPaperCurrent == 0) {
-//            mPaperCurrent = mPaperList.get(0);
-//            mPaperCurrent.setChoose(1);
-//            db.updatePatientChoose(mPaperCurrent);
-//        }
+        if (mPositionPaperCurrent == 0) {
+            mPaperCurrent = mPaperList.get(0);
+            mPaperCurrent.setChoose(1);
+            db.updatePatientChoose(mPaperCurrent);
+        }
 
         adapterPaper = new PaperAdapter(this, db.getPapersActive());
         listViewPaper.setAdapter(adapterPaper);
@@ -124,7 +162,7 @@ public class MainActivity extends AppCompatActivity
 //        categoriesAdapter = new CategoriesAdapter(this, mCategoriesString);
         //mActionBar.setListNavigationCallbacks(categoriesAdapter, new mOnNavigationListener());
 
-//        flagInitData = true;
+        flagInitData = true;
     }
 
     @Override
@@ -205,9 +243,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        if (mDrawerPaperToggle.onOptionsItemSelected(item)) {
-//            return true;
-//        }
         int id = item.getItemId();
         switch (id) {
             case R.id.action_save_newss:

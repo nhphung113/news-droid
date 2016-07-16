@@ -21,10 +21,12 @@
         android:fitsSystemWindows="true">
 
         <ListView
-            android:layout_marginTop="16dp"
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:divider="@null"
+            android:dividerHeight="@null" />
 
     </android.support.design.widget.NavigationView>
 
