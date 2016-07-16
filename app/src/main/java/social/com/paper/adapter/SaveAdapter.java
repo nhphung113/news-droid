@@ -58,7 +58,7 @@ public class SaveAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         } else {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.save_item, parent, false);
+            view = inflater.inflate(R.layout.layout_save_item, parent, false);
             holder = new ViewHolder(view);
             view.setTag(holder);
         }

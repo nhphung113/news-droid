@@ -37,7 +37,7 @@ public class SourceActivity extends ActionBarActivity implements Serializable {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.source);
+        setContentView(R.layout.layout_source);
         ButterKnife.bind(this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

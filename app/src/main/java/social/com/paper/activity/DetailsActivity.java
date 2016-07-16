@@ -40,7 +40,7 @@ public class DetailsActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.news_details);
+        setContentView(R.layout.layout_news_details);
 
         ButterKnife.bind(this);
 

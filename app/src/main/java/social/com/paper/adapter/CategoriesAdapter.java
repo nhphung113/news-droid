@@ -5,28 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-
-import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import social.com.paper.R;
-import social.com.paper.model.NewsItem;
 
 /**
  * Created by phung nguyen on 7/22/2015.
  */
-public class NewsAdapter extends BaseAdapter {
+public class CategoriesAdapter extends BaseAdapter {
 
     private final LayoutInflater inflater;
     private Activity context;
-    private ArrayList<NewsItem> data = new ArrayList<>();
+    private String[] data;
 
-    public NewsAdapter(Activity context, ArrayList<NewsItem> data) {
+    public CategoriesAdapter(Activity context, String[] data) {
         this.context = context;
         this.data = data;
         this.inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -34,12 +28,12 @@ public class NewsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return data.size();
+        return data.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return data.get(position);
+        return data[position];
     }
 
     @Override
@@ -53,27 +47,18 @@ public class NewsAdapter extends BaseAdapter {
         if (view != null) {
             holder = (ViewHolder) view.getTag();
         } else {
-            view = inflater.inflate(R.layout.layout_news_item, parent, false);
+            view = inflater.inflate(R.layout.layout_category_item, parent, false);
             holder = new ViewHolder(view);
             view.setTag(holder);
         }
 
-        NewsItem news = data.get(position);
-        holder.textTitle.setText(news.getTitle());
-        holder.textCatName.setText(news.getCategoryName());
-        holder.textShort.setText(news.getShortNews());
-        holder.textTime.setText(news.getTimeAgoString());
-        Glide.with(context).load(news.getImageLink()).fitCenter().placeholder(R.drawable.ic_photos).crossFade().into(holder.image);
+        holder.textCatName.setText(data[position]);
 
         return view;
     }
 
     static class ViewHolder {
-        @Bind(R.id.layout_news_item_image) ImageView image;
-        @Bind(R.id.layout_news_item_textTitle) TextView textTitle;
-        @Bind(R.id.layout_news_item_textShort) TextView textShort;
-        @Bind(R.id.layout_news_item_textTime) TextView textTime;
-        @Bind(R.id.layout_news_item_textCatName) TextView textCatName;
+        @Bind(R.id.layout_category_item_textCatName) TextView textCatName;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

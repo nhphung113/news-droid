@@ -5,38 +5,38 @@
 
     <item
         android:id="@+id/action_save_newss"
-        android:icon="@drawable/ic_save_black"
+        android:icon="@drawable/ic_save"
         android:orderInCategory="50"
         android:title="@string/action_save_news"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_add_papers"
-        android:icon="@drawable/ic_add_black"
+        android:icon="@drawable/ic_add"
         android:orderInCategory="50"
         android:title="@string/action_add_papers"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_saved_news"
-        android:icon="@drawable/ic_add_black"
+        android:icon="@drawable/ic_add"
         android:orderInCategory="50"
         android:title="@string/action_saved_news"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_share"
-        android:icon="@drawable/ic_add_black"
+        android:icon="@drawable/ic_add"
         android:orderInCategory="50"
         android:title="@string/action_share"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_rating"
-        android:icon="@drawable/ic_add_black"
+        android:icon="@drawable/ic_add"
         android:orderInCategory="50"
         android:title="@string/action_rating"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_about"
-        android:icon="@drawable/ic_add_black"
+        android:icon="@drawable/ic_add"
         android:orderInCategory="50"
         android:title="@string/action_about"
         app:showAsAction="never" />

@@ -44,5 +44,10 @@
 
     <string name="application_play_store">https://play.google.com/store/apps/details?id=social.com.paper</string>
     <string name="no_network_connection_toast">no_network_connection_toast</string>
+    <string name="title_activity_main22">Main22Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_menu">MenuActivity</string>
 
 </resources>

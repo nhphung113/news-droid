@@ -6,7 +6,7 @@
     android:padding="8dp" >
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/layout_news_item_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginRight="8dp" />
@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textTitle"
+            android:id="@+id/layout_news_item_textTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ngôi nhà 115 m2 ngập gió trời ở Sài Gòn"
@@ -25,7 +25,7 @@
             android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/textShort"
+            android:id="@+id/layout_news_item_textShort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -40,20 +40,20 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textCatName"
+                android:id="@+id/layout_news_item_textCatName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Kinh doanh"
                 android:textColor="#77C526" />
 
             <TextView
-                android:id="@+id/textView211"
+                android:id="@+id/layout_news_item_textView211"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" - " />
 
             <TextView
-                android:id="@+id/textTime"
+                android:id="@+id/layout_news_item_textTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="21 phút trước" />

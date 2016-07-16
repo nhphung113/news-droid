@@ -43,7 +43,7 @@ public class SaveActivity extends ActionBarActivity implements SwipeRefreshLayou
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.save);
+        setContentView(R.layout.layout_save);
         ButterKnife.bind(this);
 
         setTitle("Tin đã lưu");
