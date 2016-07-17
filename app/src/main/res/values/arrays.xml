@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories">
+        <item>Thời sự</item>
+        <item>Thế giới</item>
+        <item>Kinh doanh</item>
+        <item>Văn hóa</item>
+        <item>Giải trí</item>
+        <item>Thể thao</item>
+        <item>Pháp luật</item>
+        <item>Khoa học</item>
+        <item>Công nghệ</item>
+        <item>Sức khỏe</item>
+        <item>Giáo dục</item>
+        <item>Du lịch</item>
+    </string-array>
+</resources>
