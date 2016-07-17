@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-    <item
-        android:id="@+id/action_save_newss"
-        android:icon="@drawable/ic_save"
-        android:orderInCategory="50"
-        android:title="@string/action_save_news"
-        app:showAsAction="always" />
+    <!--<item-->
+        <!--android:id="@+id/action_save_newss"-->
+        <!--android:icon="@drawable/ic_save"-->
+        <!--android:orderInCategory="50"-->
+        <!--android:title="@string/action_save_news"-->
+        <!--app:showAsAction="always" />-->
 
     <item
         android:id="@+id/action_add_papers"

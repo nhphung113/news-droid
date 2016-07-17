@@ -4,7 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,25 +25,24 @@ import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.NewsDto;
 import social.com.paper.model.NewsItem;
 import social.com.paper.utils.Constant;
-import social.com.paper.utils.HelpUtils;
 
 /**
  * Created by phung nguyen on 7/23/2015.
  */
-public class DetailsActivity extends ActionBarActivity {
+public class DetailsActivity extends AppCompatActivity {
     @Bind(R.id.webView) WebView myWebView;
     NewsDto newsDto;
     NewsItem newsItem;
     String paperName;
     ProgressDialog dialog;
     long ticks = 0;
-
+    @Bind(R.id.toolbar) Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_news_details);
-
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
 
         ticks = (new Date().getTime());
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -57,7 +57,7 @@ public class DetailsActivity extends ActionBarActivity {
         myWebView.getSettings().setDefaultTextEncodingName("utf-8");
 
         newsDto = (NewsDto) getIntent().getExtras().getSerializable(Constant.KEY_SEND_NEWS_DTO);
-        setTitle(newsDto.getTitle());
+        getSupportActionBar().setTitle(newsDto.getTitle());
 
         newsItem = (NewsItem) getIntent().getExtras().getSerializable(Constant.KEY_SEND_NEWS_ITEM);
         paperName = getIntent().getStringExtra(Constant.KEY_SEND_PAPER_NAME);
@@ -88,9 +88,6 @@ public class DetailsActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_action_save_news:
-                saveNews();
-                break;
             case R.id.menu_action_share_news:
                 shareNews(newsDto);
                 break;
@@ -113,18 +110,18 @@ public class DetailsActivity extends ActionBarActivity {
             Toast.makeText(getApplicationContext(), R.string.toast_dont_share_news_link, Toast.LENGTH_SHORT).show();
     }
 
-    private void saveNews() {
-        DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-        if (db.existsSaveNews(newsDto))
-            Toast.makeText(getApplicationContext(), R.string.toast_you_saved_this_news, Toast.LENGTH_SHORT).show();
-        else {
-            if (HelpUtils.isConnectingToInternet(getApplicationContext())) {
-                if (db.insertSaveNews(newsDto) != 0)
-                    Toast.makeText(getApplicationContext(), R.string.toast_saved_complete, Toast.LENGTH_SHORT).show();
-            } else
-                Toast.makeText(getApplicationContext(), R.string.toast_you_need_connent_internet, Toast.LENGTH_SHORT).show();
-        }
-    }
+//    private void saveNews() {
+//        DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+//        if (db.existsSaveNews(newsDto))
+//            Toast.makeText(getApplicationContext(), R.string.toast_you_saved_this_news, Toast.LENGTH_SHORT).show();
+//        else {
+//            if (HelpUtils.isConnectingToInternet(getApplicationContext())) {
+//                if (db.insertSaveNews(newsDto) != 0)
+//                    Toast.makeText(getApplicationContext(), R.string.toast_saved_complete, Toast.LENGTH_SHORT).show();
+//            } else
+//                Toast.makeText(getApplicationContext(), R.string.toast_you_need_connent_internet, Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     public class MyBrowserTask extends AsyncTask<String, Void, String> {
         Document document;

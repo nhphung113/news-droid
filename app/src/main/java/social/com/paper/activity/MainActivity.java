@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     private CategoriesAdapter categoriesAdapter;
     private String[] mCategoriesString;
 
-    //private ArrayList<PaperDto> mPaperList = new ArrayList<>();
+    private ArrayList<PaperDto> mPaperList = new ArrayList<>();
     private PaperDto mPaperCurrent;
     private int mPositionPaperCurrent;
 
@@ -73,9 +73,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         initLayout();
-        setupData();
+        initData();
         initEvents();
-//        eventControls();
     }
 
     private void initEvents() {
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void setupData() {
+    private void initData() {
         DatabaseHandler db = new DatabaseHandler(this);
         int count = db.countPaper();
         if (count == 0) {
@@ -153,7 +152,8 @@ public class MainActivity extends AppCompatActivity
             db.updatePatientChoose(mPaperCurrent);
         }
 
-        adapterPaper = new PaperAdapter(this, db.getPapersActive());
+        mPaperList = db.getPapersActive();
+        adapterPaper = new PaperAdapter(this, mPaperList);
         listViewPaper.setAdapter(adapterPaper);
         //listViewPaper.setItemChecked(mPositionPaperCurrent, true);
         //listViewPaper.setSelection(mPositionPaperCurrent);
@@ -245,9 +245,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_save_newss:
-//                saveNews();
-                break;
             case R.id.action_add_papers:
                 startActivity(new Intent(MainActivity.this, SourceActivity.class));
                 break;
@@ -418,21 +415,4 @@ public class MainActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         return super.onPrepareOptionsMenu(menu);
     }
-
-//    @Override
-//    public void setTitle(CharSequence title) {
-//        getSupportActionBar().setTitle(mPaperCurrent.getName());
-//    }
-//
-//    @Override
-//    protected void onPostCreate(Bundle savedInstanceState) {
-//        super.onPostCreate(savedInstanceState);
-//        mDrawerPaperToggle.syncState();
-//    }
-//
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//        mDrawerPaperToggle.onConfigurationChanged(newConfig);
-//    }
 }
