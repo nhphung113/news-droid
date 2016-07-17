@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import social.com.paper.R;
-import social.com.paper.adapter.RecyclerViewAdapter;
+import social.com.paper.adapter.CategoriesAdapter;
 import social.com.paper.utils.ScreenUtils;
 
 /**
@@ -22,7 +22,7 @@ public class CategoriesFragment extends Fragment {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    private RecyclerViewAdapter mAdapter;
+    private CategoriesAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class CategoriesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         String[] data = getResources().getStringArray(R.array.categories);
-        mAdapter = new RecyclerViewAdapter(data, ScreenUtils.getDisplayMetrics(getActivity()).widthPixels / 2);
+        mAdapter = new CategoriesAdapter(data, ScreenUtils.getDisplayMetrics(getActivity()).widthPixels / 2);
         //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
     }

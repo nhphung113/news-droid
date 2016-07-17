@@ -12,12 +12,12 @@ import social.com.paper.R;
 /**
  * Created by phung on 7/17/2016.
  */
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
 
     private final FrameLayout.LayoutParams params;
     private String[] data;
 
-    public RecyclerViewAdapter(String[] data, int width) {
+    public CategoriesAdapter(String[] data, int width) {
         this.data = data;
         this.params = new FrameLayout.LayoutParams(width, width);
     }
