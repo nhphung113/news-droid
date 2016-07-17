@@ -6,41 +6,51 @@ import java.io.Serializable;
  * Created by phung nguyen on 8/11/2015.
  */
 public class CategoryDto implements Serializable {
-    private int Id;
-    private int PaperId;
-    private String Name;
-    private String RssLink;
+
+    private int id;
+    private int paperId;
+    private String name;
+    private String rssLink;
+    private String imageLink;
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public int getPaperId() {
-        return PaperId;
+        return paperId;
     }
 
     public void setPaperId(int paperId) {
-        PaperId = paperId;
+        this.paperId = paperId;
     }
 
     public String getRssLink() {
-        return RssLink;
+        return rssLink;
     }
 
     public void setRssLink(String rssLink) {
-        RssLink = rssLink;
+        this.rssLink = rssLink;
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 
     @Override

@@ -13,7 +13,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,13 +30,11 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import social.com.paper.R;
-import social.com.paper.adapter.CategoriesAdapter;
 import social.com.paper.adapter.PaperAdapter;
 import social.com.paper.adapter.TabLayoutAdapter;
 import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.NewsDto;
 import social.com.paper.dto.PaperDto;
-import social.com.paper.dto.VariableDto;
 import social.com.paper.ebus.HomeEvent;
 import social.com.paper.fragment.CategoriesFragment;
 import social.com.paper.fragment.NewsListFragment;
@@ -66,7 +63,6 @@ public class MainActivity extends AppCompatActivity
     ViewPager viewPager;
 
     private PaperAdapter adapterPaper;
-    private CategoriesAdapter categoriesAdapter;
     private String[] mCategoriesString;
 
     private ArrayList<PaperDto> mPaperList = new ArrayList<>();
@@ -104,20 +100,24 @@ public class MainActivity extends AppCompatActivity
                     drawer.closeDrawer(GravityCompat.START);
                 }
                 DatabaseHandler db = new DatabaseHandler(MainActivity.this);
-                String posCate = db.getVariableByName(Constant.KEY_CATEGORY_POSITION);
-                if (TextUtils.isEmpty(posCate))
-                    db.insertVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
-                else if (flagInitData) {
-                    int pos = Integer.parseInt(posCate);
-                    if (pos <= mPaperCurrent.getCategories().size()) {
-                        position = pos;
-                        db.updateVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
-                    }
-                } else {
-                    db.updateVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
-                }
-                flagInitData = false;
-                EventBus.getDefault().post(new HomeEvent(position, mPaperCurrent));
+//                String posCate = db.getVariableByName(Constant.KEY_CATEGORY_POSITION);
+//                if (TextUtils.isEmpty(posCate))
+//                    db.insertVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
+//                else if (flagInitData) {
+//                    int pos = Integer.parseInt(posCate);
+//                    if (pos <= mPaperCurrent.getCategories().size()) {
+//                        position = pos;
+//                        db.updateVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
+//                    }
+//                } else {
+//                    db.updateVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
+//                }
+//                flagInitData = false;
+
+                mPaperCurrent = mPaperList.get(position);
+                mPaperCurrent.setChoose(1);
+                db.updatePatientChoose(mPaperCurrent);
+                EventBus.getDefault().post(new HomeEvent(0, mPaperCurrent));
             }
         });
     }
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity
             db1.initializeData();
         }
 
-        ArrayList<PaperDto> mPaperList = db.getPapersActive();
+        mPaperList = db.getPapersActive();
         for (int i = 0; i < mPaperList.size(); i++) {
             if (mPaperList.get(i).getChoose() == 1) {
                 mPaperCurrent = mPaperList.get(i);
@@ -188,7 +188,6 @@ public class MainActivity extends AppCompatActivity
             db.updatePatientChoose(mPaperCurrent);
         }
 
-        mPaperList = db.getPapersActive();
         adapterPaper = new PaperAdapter(this, mPaperList);
         listViewPaper.setAdapter(adapterPaper);
         flagInitData = true;
