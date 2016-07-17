@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,12 +14,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -26,10 +33,13 @@ import butterknife.ButterKnife;
 import social.com.paper.R;
 import social.com.paper.adapter.CategoriesAdapter;
 import social.com.paper.adapter.PaperAdapter;
+import social.com.paper.adapter.TabLayoutAdapter;
 import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.NewsDto;
 import social.com.paper.dto.PaperDto;
 import social.com.paper.dto.VariableDto;
+import social.com.paper.ebus.HomeEvent;
+import social.com.paper.fragment.CategoriesFragment;
 import social.com.paper.fragment.NewsListFragment;
 import social.com.paper.utils.Constant;
 
@@ -39,7 +49,9 @@ import social.com.paper.utils.Constant;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    //@Bind(R.id.drawer_layout) DrawerLayout mDrawerPaperLayout;
+    private static final int TAB_HOME_INDEX = 0;
+    private static final int TAB_CATEGORIES_INDEX = 1;
+
     @Bind(R.id.listView)
     ListView listViewPaper;
     @Bind(R.id.toolbar)
@@ -48,6 +60,10 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawer;
+    @Bind(R.id.sliding_tabs)
+    TabLayout tabLayout;
+    @Bind(R.id.viewpager)
+    ViewPager viewPager;
 
     private PaperAdapter adapterPaper;
     private CategoriesAdapter categoriesAdapter;
@@ -63,21 +79,24 @@ public class MainActivity extends AppCompatActivity
     private ActionBar mActionBar;
 
     public static ArrayList<NewsDto> newsCurrentLst = new ArrayList<>();
+    private TabLayoutAdapter myFragmentPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
 
         initLayout();
         initData();
+        initTabLayout();
         initEvents();
     }
 
     private void initEvents() {
+        navigationView.setNavigationItemSelectedListener(this);
         listViewPaper.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -97,14 +116,32 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     db.updateVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
                 }
-
-                //mActionBar.setSelectedNavigationItem(position);
                 flagInitData = false;
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
-                        NewsListFragment.newInstance(position, mPaperCurrent)).commit();
+                EventBus.getDefault().post(new HomeEvent(position, mPaperCurrent));
             }
         });
+    }
+
+    private void initTabLayout() {
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        myFragmentPagerAdapter = new TabLayoutAdapter(getSupportFragmentManager(), this);
+        myFragmentPagerAdapter.addFragment(NewsListFragment.newInstance(0, mPaperCurrent));
+        myFragmentPagerAdapter.addFragment(new CategoriesFragment());
+        viewPager.setAdapter(myFragmentPagerAdapter);
+
+        // Give the TabLayout the ViewPager
+        tabLayout.setupWithViewPager(viewPager);
+
+        setupTabView(tabLayout.getTabAt(TAB_HOME_INDEX), R.drawable.ic_tab_home);
+        setupTabView(tabLayout.getTabAt(TAB_CATEGORIES_INDEX), R.drawable.ic_tab_categories);
+    }
+
+    private void setupTabView(TabLayout.Tab tab, int icon) {
+        LinearLayout tabRoot = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.custom_tab_layout, null);
+        ImageView ivIcon = (ImageView) tabRoot.findViewById(R.id.custom_tab_layout_tab_icon);
+        ivIcon.setImageResource(icon);
+        if (tab.getPosition() == TAB_HOME_INDEX) ivIcon.setSelected(true);
+        tab.setCustomView(tabRoot);
     }
 
     private void initLayout() {
@@ -112,7 +149,6 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -155,13 +191,6 @@ public class MainActivity extends AppCompatActivity
         mPaperList = db.getPapersActive();
         adapterPaper = new PaperAdapter(this, mPaperList);
         listViewPaper.setAdapter(adapterPaper);
-        //listViewPaper.setItemChecked(mPositionPaperCurrent, true);
-        //listViewPaper.setSelection(mPositionPaperCurrent);
-
-//        mCategoriesString = mPaperCurrent.getCategoriesString();
-//        categoriesAdapter = new CategoriesAdapter(this, mCategoriesString);
-        //mActionBar.setListNavigationCallbacks(categoriesAdapter, new mOnNavigationListener());
-
         flagInitData = true;
     }
 
@@ -169,71 +198,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         return false;
     }
-
-//    public class mOnNavigationListener implements ActionBar.OnNavigationListener {
-//        @Override
-//        public boolean onNavigationItemSelected(int position, long itemId) {
-//            DatabaseHandler db = new DatabaseHandler(MainActivity.this);
-//            String posCate = db.getVariableByName(Constant.KEY_CATEGORY_POSITION);
-//            if (posCate == "")
-//                db.insertVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
-//            else if (flagInitData && posCate != "") {
-//                int pos = Integer.parseInt(posCate);
-//                if (pos <= mPaperCurrent.getCategories().size()) {
-//                    position = pos;
-//                    db.updateVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
-//                }
-//            } else
-//                db.updateVariable(new VariableDto(Constant.KEY_CATEGORY_POSITION, position + ""));
-//
-//            mActionBar.setSelectedNavigationItem(position);
-//            flagInitData = false;
-//
-//            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
-//                    NewsListFragment.newInstance(position, mPaperCurrent)).commit();
-//
-//            return true;
-//        }
-//    }
-
-//    private void eventControls() {
-//        listViewPaper.setOnItemClickListener(new ListView.OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                mPaperCurrent = mPaperList.get(position);
-//                mPaperCurrent.setChoose(1);
-//                mPositionPaperCurrent = position;
-//                DatabaseHandler db = new DatabaseHandler(MainActivity.this);
-//                db.updatePatientChoose(mPaperCurrent);
-//                listViewPaper.setItemChecked(position, true);
-//                listViewPaper.setSelection(position);
-//                mDrawerPaperLayout.closeDrawer(listViewPaper);
-//
-//                mCategoriesString = mPaperCurrent.getCategoriesString();
-//                categoriesAdapter = new CategoriesAdapter(MainActivity.this, mCategoriesString);
-//                mActionBar.setListNavigationCallbacks(categoriesAdapter, new mOnNavigationListener());
-//            }
-//        });
-//        mDrawerPaperToggle = new ActionBarDrawerToggle(this, mDrawerPaperLayout,
-//                R.string.app_name, // nav drawer open - description for accessibility
-//                R.string.app_name // nav drawer close - description for accessibility
-//        ) {
-//            public void onDrawerClosed(View view) {
-//                mActionBar.setDisplayShowTitleEnabled(false);
-//                mActionBar.setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_LIST);
-//                invalidateOptionsMenu();
-//            }
-//
-//            public void onDrawerOpened(View drawerView) {
-//                mActionBar.setTitle(mPaperCurrent.getName());
-//                mActionBar.setDisplayShowTitleEnabled(true);
-//                mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-//                invalidateOptionsMenu();
-//            }
-//        };
-//        mDrawerPaperLayout.setDrawerListener(mDrawerPaperToggle);
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

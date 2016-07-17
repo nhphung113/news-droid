@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,6 +18,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -31,6 +35,7 @@ import social.com.paper.adapter.NewsAdapter;
 import social.com.paper.database.DatabaseHandler;
 import social.com.paper.dto.NewsDto;
 import social.com.paper.dto.PaperDto;
+import social.com.paper.ebus.HomeEvent;
 import social.com.paper.model.NewsItem;
 import social.com.paper.utils.Constant;
 import social.com.paper.utils.HelpUtils;
@@ -40,32 +45,51 @@ import social.com.paper.utils.RssParser;
  * Created by phung nguyen on 7/22/2015.
  */
 public class NewsListFragment extends Fragment {
-    int PAGE_NUMBER = 4;
+    private static final String TAG = NewsListFragment.class.getName();
+    private int PAGE_NUMBER = 4;
 
     @Bind(R.id.lvNewsList) ListView mListView;
     @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
 
-    NewsAdapter mAdapter;
-    ArrayList<NewsItem> newsItemLst = new ArrayList<>();
+    private NewsAdapter mAdapter;
+    private ArrayList<NewsItem> newsItemLst = new ArrayList<>();
     public static ArrayList<NewsDto> newsDtoLst = new ArrayList<>();
-    PaperDto paperDto;
-    int positionCate = 0;
-    ProgressDialog mDialog;
-    ProgressDialog mDialogSaveNews;
+    private PaperDto paperDto;
+    private int positionCate = 0;
+    private ProgressDialog mDialog;
+    private ProgressDialog mDialogSaveNews;
 
-    String link = "";
-    int posContextMenu = -1;
+    private String link = "";
+    private int posContextMenu = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_news_fragment, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
 
         initialize();
-        eventControls();
+        initEvents();
         registerForContextMenu(mListView);
 
         return view;
+    }
+
+    @Subscribe
+    public void onHomeEvent(HomeEvent event) {
+        Log.i(TAG, "onHomeEvent");
+        positionCate = event.positionCate;
+        paperDto = event.paperDto;
+        if (paperDto != null) {
+            link = paperDto.getCategories().get(positionCate).getRssLink();
+            if (!TextUtils.isEmpty(link)) {
+                mDialog = new ProgressDialog(getActivity());
+                mDialog.setMessage(getResources().getString(R.string.toast_loading));
+                mDialog.setCancelable(false);
+                mDialog.show();
+                new LoadNewsListTask().execute(positionCate);
+            }
+        }
     }
 
     @Override
@@ -82,6 +106,8 @@ public class NewsListFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -136,7 +162,7 @@ public class NewsListFragment extends Fragment {
             Toast.makeText(getActivity(), R.string.toast_you_saved_this_news, Toast.LENGTH_SHORT).show();
     }
 
-    private void eventControls() {
+    private void initEvents() {
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -213,10 +239,7 @@ public class NewsListFragment extends Fragment {
 
     private void initialize() {
         mSwipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
-
-        newsItemLst = new ArrayList<>();
         mAdapter = new NewsAdapter(getActivity(), newsItemLst);
-
         mListView.setAdapter(mAdapter);
 
         if (HelpUtils.isConnectingToInternet(getActivity())) {
@@ -224,17 +247,20 @@ public class NewsListFragment extends Fragment {
             if (bundle != null) {
                 positionCate = bundle.getInt(Constant.KEY_CATEGORY);
                 paperDto = (PaperDto) bundle.getSerializable(Constant.KEY_PAPER);
-                link = paperDto.getCategories().get(positionCate).getRssLink();
+                if (paperDto != null) {
+                    link = paperDto.getCategories().get(positionCate).getRssLink();
+                    if (!TextUtils.isEmpty(link)) {
+                        mDialog = new ProgressDialog(getActivity());
+                        mDialog.setMessage(getResources().getString(R.string.toast_loading));
+                        mDialog.setCancelable(false);
+                        mDialog.show();
+                        new LoadNewsListTask().execute(positionCate);
+                    }
+                }
             }
-
-            mDialog = new ProgressDialog(getActivity());
-            mDialog.setMessage(getResources().getString(R.string.toast_loading));
-            mDialog.setCancelable(false);
-            mDialog.show();
-
-            new LoadNewsListTask().execute(positionCate);
-        } else
+        } else {
             Toast.makeText(getActivity(), R.string.toast_internet_failed, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static NewsListFragment newInstance(int position, PaperDto mPaperCurrent) {
