@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#229EA9</color>
-    <color name="colorPrimaryDark">#1e8e98</color>
-    <color name="colorAccent">#229EA9</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#F44336</color>
+    <color name="gray">#E0E0E0</color>
 
     <color name="list_background_pressed">#DEDEDE</color>
     <color name="source_paper_item_selected">#57dd86</color>

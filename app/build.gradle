@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "social.com.paper"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 22
         versionCode 10
         versionName "1.09"
