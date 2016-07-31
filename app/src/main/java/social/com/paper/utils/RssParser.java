@@ -37,35 +37,28 @@ public class RssParser {
             SAXParser parser = factory.newSAXParser();
             XMLReader reader = parser.getXMLReader();
 
-            RssHandler handler = new RssHandler();
-            handler.setPaperDto(paperDto);
-            handler.setPosCate(posCate);
-            handler.setActivity(activity);
-
+            RssHandler handler = new RssHandler(activity, paperDto, posCate);
             reader.setContentHandler(handler);
 
             InputSource inStream = new InputSource();
             inStream.setCharacterStream(new StringReader(EntityUtils.toString(entity)));
             reader.parse(inStream);
 
-            result = handler.getNewsList();
+            result = handler.getNews();
         } catch (Exception e) {
             try {
                 URL url = new URL(link);
                 InputSource input = new InputSource(url.openStream());
                 SAXParserFactory factory = SAXParserFactory.newInstance();
                 SAXParser parser = factory.newSAXParser();
+
+                RssHandler handler = new RssHandler(activity, paperDto, posCate);
+
                 XMLReader reader = parser.getXMLReader();
-
-                RssHandler handler = new RssHandler();
-                handler.setPaperDto(paperDto);
-                handler.setPosCate(posCate);
-                handler.setActivity(activity);
-
                 reader.setContentHandler(handler);
                 reader.parse(input);
 
-                result = handler.getNewsList();
+                result = handler.getNews();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

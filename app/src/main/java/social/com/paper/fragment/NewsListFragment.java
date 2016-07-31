@@ -25,9 +25,15 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Observable;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import social.com.paper.R;
 import social.com.paper.activity.DetailsActivity;
 import social.com.paper.activity.MainActivity;
@@ -48,8 +54,10 @@ public class NewsListFragment extends Fragment {
     private static final String TAG = NewsListFragment.class.getName();
     private int PAGE_NUMBER = 4;
 
-    @Bind(R.id.lvNewsList) ListView mListView;
-    @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(R.id.lvNewsList)
+    ListView mListView;
+    @Bind(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private NewsAdapter mAdapter;
     private ArrayList<NewsItem> newsItemLst = new ArrayList<>();
@@ -61,6 +69,7 @@ public class NewsListFragment extends Fragment {
 
     private String link = "";
     private int posContextMenu = -1;
+    private Subscription subscription;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +97,32 @@ public class NewsListFragment extends Fragment {
                 mDialog.setCancelable(false);
                 mDialog.show();
                 new LoadNewsListTask().execute(positionCate);
+
+                Observable<ArrayList<NewsDto>> observable = Observable.fromCallable(new Callable<ArrayList<NewsDto>>() {
+                    @Override
+                    public ArrayList<NewsDto> call() throws Exception {
+                        return RssParser.getNewsList(positionCate, paperDto, getActivity());
+                    }
+                });
+                subscription = observable
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<ArrayList<NewsDto>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, e.toString());
+                            }
+
+                            @Override
+                            public void onNext(ArrayList<NewsDto> list) {
+                                loadUI(list);
+                            }
+                        });
             }
         }
     }
@@ -108,6 +143,7 @@ public class NewsListFragment extends Fragment {
         super.onDestroy();
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
+        if (subscription != null && !subscription.isUnsubscribed()) subscription.unsubscribe();
     }
 
     @Override
@@ -282,42 +318,48 @@ public class NewsListFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<NewsDto> result) {
             super.onPostExecute(result);
-            try {
-                newsItemLst.clear();
-                MainActivity.newsCurrentLst = result;
-                if (result.size() == 0) {
-                    Toast.makeText(getActivity(), R.string.toast_dont_news, Toast.LENGTH_SHORT).show();
-                    mAdapter.notifyDataSetChanged();
-                } else {
-                    newsDtoLst = result;
-                    PAGE_NUMBER = result.size() / Constant.NUMBERS_NEWS_ON_LIST;
-                    for (int i = 0; i < result.size() / PAGE_NUMBER; i++) {
-                        NewsDto newsDto = result.get(i);
-                        NewsItem item = new NewsItem();
-                        item.setTitle(newsDto.getTitle());
-                        item.setShortNews(newsDto.getShortNews());
-                        item.setImageLink(newsDto.getImageLink());
-                        item.setDateTimeAgo(newsDto.getPostedDate());
-                        item.setLink(newsDto.getLink());
-                        item.setCategoryName(paperDto.getCategories().get(positionCate).getName());
-                        newsItemLst.add(item);
-                    }
+            loadUI(result);
+        }
+    }
 
-                    try {
-                        mAdapter = new NewsAdapter(getActivity(), newsItemLst);
-                        mListView.setAdapter(mAdapter);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+    private void loadUI(ArrayList<NewsDto> result) {
+        try {
+            newsItemLst.clear();
+            MainActivity.newsCurrentLst = result;
+            if (result.size() == 0) {
+                Toast.makeText(getActivity(), R.string.toast_dont_news, Toast.LENGTH_SHORT).show();
+                mAdapter.notifyDataSetChanged();
+            } else {
+                newsDtoLst = result;
+                PAGE_NUMBER = result.size() / Constant.NUMBERS_NEWS_ON_LIST;
+                for (int i = 0; i < result.size() / PAGE_NUMBER; i++) {
+                    NewsDto newsDto = result.get(i);
+                    NewsItem item = new NewsItem();
+                    item.setTitle(newsDto.getTitle());
+                    item.setShortNews(newsDto.getShortNews());
+                    item.setImageLink(newsDto.getImageLink());
+                    item.setDateTimeAgo(newsDto.getPostedDate());
+                    item.setLink(newsDto.getLink());
+                    item.setCategoryName(paperDto.getCategories().get(positionCate).getName());
+                    newsItemLst.add(item);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (mDialog.isShowing())
-                mDialog.dismiss();
 
-            if (mSwipeRefreshLayout.isRefreshing())
-                mSwipeRefreshLayout.setRefreshing(false);
+                try {
+                    mAdapter = new NewsAdapter(getActivity(), newsItemLst);
+                    mListView.setAdapter(mAdapter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
+
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 

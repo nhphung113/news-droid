@@ -34,31 +34,25 @@ public class RssHandler extends DefaultHandler {
     public static final String IMAGE = "image";
     public static final String END_CODED = "encoded";
 
-    private PaperDto mPaperDto;
-    private int posCate;
-    private NewsDto mNewsDto;
-    private ArrayList<NewsDto> mNewsDtoList = new ArrayList<>();
-    private Activity mActivity;
+    private int position;
+    private PaperDto paperDto;
+    private NewsDto newsDto;
+    private ArrayList<NewsDto> data = new ArrayList<>();
+    private Activity activity;
 
-    private RssItem mRssItem;
+    private RssItem rssItem;
     private Boolean started = false;
     private StringBuilder stringBuilder = new StringBuilder();
-    private HashMap<String, String> mNewsMap = new HashMap<>();
+    private HashMap<String, String> newsMap = new HashMap<>();
 
-    public ArrayList<NewsDto> getNewsList() {
-        return mNewsDtoList;
+    public RssHandler(Activity activity, PaperDto paperDto, int position) {
+        this.activity = activity;
+        this.paperDto = paperDto;
+        this.position = position;
     }
 
-    public void setPaperDto(PaperDto paperDto) {
-        this.mPaperDto = paperDto;
-    }
-
-    public void setPosCate(int posCate) {
-        this.posCate = posCate;
-    }
-
-    public void setActivity(Activity activity) {
-        this.mActivity = activity;
+    public ArrayList<NewsDto> getNews() {
+        return data;
     }
 
     @Override
@@ -72,9 +66,9 @@ public class RssHandler extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         super.startElement(uri, localName, qName, attributes);
         if (localName.equalsIgnoreCase(ITEM)) {
-            mRssItem = new RssItem();
-            mNewsDto = new NewsDto();
-            mNewsDto.setCateId(mPaperDto.getCategories().get(posCate).getId());
+            rssItem = new RssItem();
+            newsDto = new NewsDto();
+            newsDto.setCateId(paperDto.getCategories().get(position).getId());
             started = true;
         }
     }
@@ -83,26 +77,26 @@ public class RssHandler extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         super.endElement(uri, localName, qName);
         if (localName.equalsIgnoreCase(ITEM)) {
-            if (!mNewsMap.containsKey(mRssItem.getTitle())) {
-                if (mRssItem.getLink() != null && !mRssItem.getLink().contains("video.vnexpress.net")) {
-                    mNewsMap.put(mRssItem.getTitle(), mRssItem.getTitle());
-                    DatabaseHandler db = new DatabaseHandler(mActivity);
-                    NewsDto newsDto = db.getNewsByLink(mRssItem.getLink());
+            if (!newsMap.containsKey(rssItem.getTitle())) {
+                if (rssItem.getLink() != null && !rssItem.getLink().contains("video.vnexpress.net")) {
+                    newsMap.put(rssItem.getTitle(), rssItem.getTitle());
+                    DatabaseHandler db = new DatabaseHandler(activity);
+                    NewsDto newsDto = db.getNewsByLink(rssItem.getLink());
                     if (newsDto != null)
-                        mNewsDtoList.add(newsDto);
+                        data.add(newsDto);
                     else {
-                        mNewsDto.setCateId(mPaperDto.getCategories().get(posCate).getId());
-                        mNewsDto.setTitle(mRssItem.getTitle());
-                        mNewsDto.setImageLink(mRssItem.getImgSrc());
-                        mNewsDto.setLink(mRssItem.getLink());
-                        mNewsDto.setPostedDate(mRssItem.getPostedTime());
-                        mNewsDto.setShortNews(mRssItem.getDescription());
-                        int _id = db.insertNews(mNewsDto);
-                        mNewsDto.setId(_id);
-                        mNewsDtoList.add(mNewsDto);
+                        this.newsDto.setCateId(paperDto.getCategories().get(position).getId());
+                        this.newsDto.setTitle(rssItem.getTitle());
+                        this.newsDto.setImageLink(rssItem.getImgSrc());
+                        this.newsDto.setLink(rssItem.getLink());
+                        this.newsDto.setPostedDate(rssItem.getPostedTime());
+                        this.newsDto.setShortNews(rssItem.getDescription());
+                        int _id = db.insertNews(this.newsDto);
+                        this.newsDto.setId(_id);
+                        data.add(this.newsDto);
                     }
-                    mRssItem = new RssItem();
-                    mNewsDto = new NewsDto();
+                    rssItem = new RssItem();
+                    this.newsDto = new NewsDto();
                 }
             }
         } else if (started) {
@@ -112,13 +106,13 @@ public class RssHandler extends DefaultHandler {
                 } else if (localName.equalsIgnoreCase(DESCRIPTION)) {
                     handleDescription(stringBuilder.toString());
                 } else if (localName.equalsIgnoreCase(LINK)) {
-                    mRssItem.setLink(stringBuilder.toString().trim());
+                    rssItem.setLink(stringBuilder.toString().trim());
                 } else if (localName.equalsIgnoreCase(DATE)) {
                     handlePubDate(stringBuilder.toString().trim());
                 } else if (localName.equalsIgnoreCase(SUMMARY_IMG)) {
-                    mRssItem.setImgSrc(stringBuilder.toString().trim());
+                    rssItem.setImgSrc(stringBuilder.toString().trim());
                 } else if (localName.equalsIgnoreCase(IMAGE)) {
-                    mRssItem.setImgSrc(stringBuilder.toString().trim());
+                    rssItem.setImgSrc(stringBuilder.toString().trim());
                 } else if (localName.equalsIgnoreCase(END_CODED)) {
                     handleImageFirst(stringBuilder.toString().trim());
                 }
@@ -131,21 +125,21 @@ public class RssHandler extends DefaultHandler {
         title = title.replace("&apos;", "'");
         title = title.replace("amp;", "");
         title = title.replace("\\n", "").trim();
-        mRssItem.setTitle(title);
+        rssItem.setTitle(title);
     }
 
     private void handleImageFirst(String string_builder) {
         Document doc = Jsoup.parse("<p>" + string_builder + "</p>");
         Element imgElement = doc.select("img").first();
         if (imgElement != null) {
-            mRssItem.setImgSrc(imgElement.attr("src"));
+            rssItem.setImgSrc(imgElement.attr("src"));
             doc.select("img").remove();
         }
     }
 
     private void handlePubDate(String string_builder) {
         Date pubDate;
-        SimpleDateFormat sdf = new SimpleDateFormat(mPaperDto.getDateFormat(), Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(paperDto.getDateFormat(), Locale.US);
         try {
             pubDate = sdf.parse(string_builder);
         } catch (ParseException e) {
@@ -153,9 +147,9 @@ public class RssHandler extends DefaultHandler {
             pubDate = null;
         }
         if (pubDate != null)
-            mRssItem.setPostedTime(pubDate.getTime());
+            rssItem.setPostedTime(pubDate.getTime());
         else
-            mRssItem.setPostedTime(new Date().getTime());
+            rssItem.setPostedTime(new Date().getTime());
     }
 
     private void handleDescription(String string_builder) {
@@ -168,7 +162,7 @@ public class RssHandler extends DefaultHandler {
         Document doc = Jsoup.parse("<p>" + string_builder + "</p>");
         Element imgElement = doc.select("img").first();
         if (imgElement != null) {
-            mRssItem.setImgSrc(imgElement.attr("src"));
+            rssItem.setImgSrc(imgElement.attr("src"));
             doc.select("img").remove();
         }
         doc.select("a").remove();
@@ -191,6 +185,6 @@ public class RssHandler extends DefaultHandler {
             short_news = short_news.replace("&#39;", "");
         }
         short_news = (short_news.length() > 200 ? short_news.substring(0, 200) : short_news);
-        mRssItem.setDescription(short_news);
+        rssItem.setDescription(short_news);
     }
 }

@@ -7,8 +7,16 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:navigationIcon">@drawable/ic_menu_home</item>
     </style>
 
-    <color name="white">#ffffff</color>
+    <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_menu_home</item>
+    </style>
+
+    <style name="ThemeToolbar" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/colorAccent</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
 </resources>
